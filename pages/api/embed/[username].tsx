@@ -86,15 +86,18 @@ export default async function handler(
 	//ranking of user from range D C B B+ A A+ S S+ dependant on the amount of commits from commit count range [0 - 3000]
 	const ranking = () => {
 		const commits = UserData.thisyear || 0
-		if (commits < 50) return 'D'
-		if (commits < 100) return 'C'
-		if (commits < 300) return 'B'
-		if (commits < 500) return 'B+'
-		if (commits < 800) return 'A'
-		if (commits < 1200) return 'A+'
-		if (commits < 1700) return 'S'
-		if (commits < 2500) return 'S+'
+		if (commits > 1500) return 'S'
+		if (commits > 1200) return 'A+'
+		if (commits > 800) return 'A'
+		if (commits > 500) return 'B+'
+		if (commits > 300) return 'B'
+		if (commits > 100) return 'C'
+		if (commits > 50) return 'D'
 	}
+
+	const commitRange = 1500 - 0
+	const progressRange = 0 - 250
+	const progress = ((UserData.thisyear - 0) * progressRange) / commitRange + 250
 
 	//SVG of GitHub Stats taken from https://github.com/LordDashMe/github-contribution-stats under MIT License
 	//I really love the look of the embed and wanted to use it as a base line
@@ -186,8 +189,7 @@ export default async function handler(
 						stroke-dashoffset: 250;
 					}
 					to {
-						//This is where the magic happens
-						stroke-dashoffset: 0;
+						stroke-dashoffset: ${progress};
 					}
 				}`
 
