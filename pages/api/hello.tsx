@@ -9,9 +9,19 @@ type UserData = {
 	issues: number
 }
 
+type Data = {
+	username: string
+	thisyear: number
+	thismonth: number
+	thisweek: number
+	pullrequests: number
+	issues: number
+	ranking: string
+}
+
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse
+	res: NextApiResponse<Data>
 ) {
 	//get the time it was 12 months ago
 	const date = new Date()
@@ -55,5 +65,26 @@ export default async function handler(
 		issues: resp.user.contributionsCollection.totalIssueContributions,
 	}
 
-	return res.status(200).json(UserData)
+	//ranking of user from range D C B B+ A A+ S S+ dependant on the amount of commits from commit count range [0 - 3000]
+	const ranking = () => {
+		const commits = UserData.thisyear || 0
+		if (commits < 50) return 'D'
+		if (commits < 100) return 'C'
+		if (commits < 300) return 'B'
+		if (commits < 500) return 'B+'
+		if (commits < 800) return 'A'
+		if (commits < 1200) return 'A+'
+		if (commits < 1700) return 'S'
+		if (commits < 2500) return 'S+'
+	}
+
+	res.status(200).json({
+		username: 'PressJump',
+		thisyear: UserData.thisyear,
+		thismonth: UserData.thismonth,
+		thisweek: UserData.thisweek,
+		pullrequests: UserData.pullrequests,
+		issues: UserData.issues,
+		ranking: ranking()!,
+	})
 }
