@@ -28,7 +28,7 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
 ) {
-	const username = req.query.username
+	const username = req.query.username?.toString()
 
 	const date = new Date()
 	date.setMonth(date.getMonth() - 12)
@@ -51,20 +51,20 @@ export default async function handler(
 		}
 		}`
 
+	//get data from github api using graphql query and token from env. If the user does not exist or somethign goes wrong send back 404
 	const resp = await graphql(query, {
 		headers: {
 			authorization: `token ${process.env.GITHUB_TOKEN}`,
 		},
 	})
-
-	//error
-	if (resp.user === null) {
-		return res.status(404).json({
-			error: {
-				message: 'User not found',
-			},
+		.then((res: any) => res)
+		.catch((err: any) => {
+			res.status(404).json({
+				error: {
+					message: 'User not found',
+				},
+			})
 		})
-	}
 
 	const UserData: UserData = {
 		thisyear:
@@ -95,7 +95,7 @@ export default async function handler(
 
 	res.status(200).json({
 		user: {
-			username: 'PressJump',
+			username: username!,
 			thisyear: UserData.thisyear,
 			thismonth: UserData.thismonth,
 			thisweek: UserData.thisweek,
