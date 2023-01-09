@@ -10,6 +10,7 @@ type UserData = {
 	thisweek: number
 	pullrequests: number
 	issues: number
+	ranking: string
 }
 
 type Data = {
@@ -25,6 +26,7 @@ type Data = {
 		issues: number
 		ranking: string
 	}
+	message?: any
 }
 
 export default async function handler(
@@ -36,68 +38,60 @@ export default async function handler(
 
 	const username = req.query.username?.toString()
 
-	// const date = new Date()
-	// date.setMonth(date.getMonth() - 12)
-	// //query get all commits, issues, pullrequests and code reviews last 12 months
-	// const query = `query {
-	// 	user(login: "${username}") {
-	// 		contributionsCollection(from: "${date.toISOString()}", to: "${new Date().toISOString()}") {
-	// 		totalIssueContributions
-	// 		totalPullRequestContributions
-	// 		contributionCalendar {
-	// 			totalContributions
-	// 			weeks {
-	// 				contributionDays {
-	// 					contributionCount
-	// 					date
-	// 				}
-	// 			}
-	// 		}
-	// 		}
-	// 	}
-	// 	}`
+	const date = new Date()
+	date.setMonth(date.getMonth() - 12)
+	//query get all commits, issues, pullrequests and code reviews last 12 months
+	const query = `query {
+		user(login: "${username}") {
+			contributionsCollection(from: "${date.toISOString()}", to: "${new Date().toISOString()}") {
+			totalIssueContributions
+			totalPullRequestContributions
+			contributionCalendar {
+				totalContributions
+				weeks {
+					contributionDays {
+						contributionCount
+						date
+					}
+				}
+			}
 
-	// //get data from github api using graphql query and token from env. If the user does not exist or somethign goes wrong send back 404
-	// const resp = await graphql(query, {
-	// 	headers: {
-	// 		authorization: `token ${process.env.GITHUB_TOKEN}`,
-	// 	},
-	// })
-	// 	.then((res: any) => res)
-	// 	.catch((err: any) => {
-	// 		res.status(404).json({
-	// 			error: {
-	// 				message: 'User not found',
-	// 			},
-	// 		})
-	// 	})
+			commitContributionsByRepository {
+				repository {
+					languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
+						edges {
+							size
+							node {
+							color
+							name
+							id
+							}
+						}
+					}
+				}
+			}
 
-	// const UserData: UserData = {
-	// 	thisyear:
-	// 		resp.user.contributionsCollection.contributionCalendar.totalContributions,
-	// 	thismonth: resp.user.contributionsCollection.contributionCalendar.weeks[
-	// 		resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
-	// 	].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
-	// 	thisweek: resp.user.contributionsCollection.contributionCalendar.weeks[
-	// 		resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
-	// 	].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
-	// 	pullrequests:
-	// 		resp.user.contributionsCollection.totalPullRequestContributions,
-	// 	issues: resp.user.contributionsCollection.totalIssueContributions,
-	// }
+			}
+		}
+		}`
 
-	//Dummy UserData
-	const UserData: UserData = {
-		thisyear: 1000,
-		thismonth: 100,
-		thisweek: 10,
-		pullrequests: 10,
-		issues: 10,
-	}
+	const resp = await graphql(query, {
+		headers: {
+			authorization: `token ${process.env.GITHUB_TOKEN}`,
+		},
+	})
+		.then((res: any) => res)
+		.catch((err: any) => {
+			res.status(404).json({
+				error: {
+					message: err.message,
+				},
+			})
+		})
 
 	//ranking of user from range D C B B+ A A+ S S+ dependant on the amount of commits from commit count range [0 - 3000]
-	const ranking = () => {
-		const commits = UserData.thisyear || 0
+	const ranking = (thisyear: number) => {
+		const commits = thisyear || 0
 		if (commits > 1500) return 'S'
 		if (commits > 1200) return 'A+'
 		if (commits > 800) return 'A'
@@ -107,9 +101,48 @@ export default async function handler(
 		if (commits > 50) return 'D'
 	}
 
+	const UserData: UserData = {
+		thisyear:
+			resp.user.contributionsCollection.contributionCalendar.totalContributions,
+		thismonth: resp.user.contributionsCollection.contributionCalendar.weeks[
+			resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
+		].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
+		thisweek: resp.user.contributionsCollection.contributionCalendar.weeks[
+			resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
+		].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
+		pullrequests:
+			resp.user.contributionsCollection.totalPullRequestContributions,
+		issues: resp.user.contributionsCollection.totalIssueContributions,
+		ranking: ranking(
+			resp.user.contributionsCollection.contributionCalendar.totalContributions
+		)!,
+	}
+
 	const commitRange = 1500 - 0
 	const progressRange = 0 - 250
 	const progress = ((UserData.thisyear - 0) * progressRange) / commitRange + 250
+	const repositories =
+		resp.user.contributionsCollection.commitContributionsByRepository
+
+	const languages = repositories.map((repo: any) => {
+		const lang = repo.repository.languages.edges.map((lang: any) => {
+			return {
+				name: lang.node.name,
+			}
+		})
+		return lang
+	})
+
+	const languageCount = languages.reduce((acc: any, val: any) => {
+		val.forEach((lang: any) => {
+			acc[lang.name] = (acc[lang.name] || 0) + 1
+		})
+		return acc
+	}, {})
+
+	const topLanguages = Object.entries(languageCount)
+		.sort((a, b) => b[1] - a[1])
+		.slice(0, 4)
 
 	//SVG of GitHub Stats taken from https://github.com/LordDashMe/github-contribution-stats under MIT License
 	//I really love the look of the embed and wanted to use it as a base line
@@ -121,7 +154,7 @@ export default async function handler(
 				.title {
 					font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
 					font-size: 20px;
-					font-weight: 700;
+					font-weight: 400;
 					fill: #000;
 					animation: fadeIn 0.8s ease-in-out forwards;
 				}
@@ -233,7 +266,7 @@ export default async function handler(
 					alignment-baseline="central"
 					dominant-baseline="central"
 				>
-					{ranking()}
+					{UserData.ranking}
 				</text>
 			</g>
 			<svg
@@ -397,6 +430,26 @@ export default async function handler(
 			<text xmlns="http://www.w3.org/2000/svg" className="title" x="370" y="35">
 				Top Languages
 			</text>
+			<g id="toplangfirst" className="item" transform="translate(25, 35)">
+				<text className="contribution-stats" x="370" y="35">
+					{topLanguages[0][0]}
+				</text>
+			</g>
+			<g id="toplangfirst" className="item" transform="translate(25, 35)">
+				<text className="contribution-stats" x="370" y="70">
+					{topLanguages[1][0]}
+				</text>
+			</g>
+			<g id="toplangfirst" className="item" transform="translate(25, 35)">
+				<text className="contribution-stats" x="370" y="105">
+					{topLanguages[2][0]}
+				</text>
+			</g>
+			<g id="toplangfirst" className="item" transform="translate(25, 35)">
+				<text className="contribution-stats" x="370" y="140">
+					{topLanguages[3][0]}
+				</text>
+			</g>
 		</svg>
 	)
 	const svg = ReactDomServer.renderToString(svgimage)
