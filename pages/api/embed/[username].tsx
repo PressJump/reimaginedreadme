@@ -31,56 +31,68 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
 ) {
+	//cache for 1 hour
+	res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate')
+
 	const username = req.query.username?.toString()
 
-	const date = new Date()
-	date.setMonth(date.getMonth() - 12)
-	//query get all commits, issues, pullrequests and code reviews last 12 months
-	const query = `query {
-		user(login: "${username}") {
-			contributionsCollection(from: "${date.toISOString()}", to: "${new Date().toISOString()}") {
-			totalIssueContributions
-			totalPullRequestContributions
-			contributionCalendar {
-				totalContributions
-				weeks {
-					contributionDays {
-						contributionCount
-						date
-					}
-				}
-			}
-			}
-		}
-		}`
+	// const date = new Date()
+	// date.setMonth(date.getMonth() - 12)
+	// //query get all commits, issues, pullrequests and code reviews last 12 months
+	// const query = `query {
+	// 	user(login: "${username}") {
+	// 		contributionsCollection(from: "${date.toISOString()}", to: "${new Date().toISOString()}") {
+	// 		totalIssueContributions
+	// 		totalPullRequestContributions
+	// 		contributionCalendar {
+	// 			totalContributions
+	// 			weeks {
+	// 				contributionDays {
+	// 					contributionCount
+	// 					date
+	// 				}
+	// 			}
+	// 		}
+	// 		}
+	// 	}
+	// 	}`
 
-	//get data from github api using graphql query and token from env. If the user does not exist or somethign goes wrong send back 404
-	const resp = await graphql(query, {
-		headers: {
-			authorization: `token ${process.env.GITHUB_TOKEN}`,
-		},
-	})
-		.then((res: any) => res)
-		.catch((err: any) => {
-			res.status(404).json({
-				error: {
-					message: 'User not found',
-				},
-			})
-		})
+	// //get data from github api using graphql query and token from env. If the user does not exist or somethign goes wrong send back 404
+	// const resp = await graphql(query, {
+	// 	headers: {
+	// 		authorization: `token ${process.env.GITHUB_TOKEN}`,
+	// 	},
+	// })
+	// 	.then((res: any) => res)
+	// 	.catch((err: any) => {
+	// 		res.status(404).json({
+	// 			error: {
+	// 				message: 'User not found',
+	// 			},
+	// 		})
+	// 	})
 
+	// const UserData: UserData = {
+	// 	thisyear:
+	// 		resp.user.contributionsCollection.contributionCalendar.totalContributions,
+	// 	thismonth: resp.user.contributionsCollection.contributionCalendar.weeks[
+	// 		resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
+	// 	].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
+	// 	thisweek: resp.user.contributionsCollection.contributionCalendar.weeks[
+	// 		resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
+	// 	].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
+	// 	pullrequests:
+	// 		resp.user.contributionsCollection.totalPullRequestContributions,
+	// 	issues: resp.user.contributionsCollection.totalIssueContributions,
+	// }
+
+	//Dummy UserData
 	const UserData: UserData = {
-		thisyear:
-			resp.user.contributionsCollection.contributionCalendar.totalContributions,
-		thismonth: resp.user.contributionsCollection.contributionCalendar.weeks[
-			resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
-		].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
-		thisweek: resp.user.contributionsCollection.contributionCalendar.weeks[
-			resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
-		].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
-		pullrequests:
-			resp.user.contributionsCollection.totalPullRequestContributions,
-		issues: resp.user.contributionsCollection.totalIssueContributions,
+		thisyear: 1000,
+		thismonth: 100,
+		thisweek: 10,
+		pullrequests: 10,
+		issues: 10,
 	}
 
 	//ranking of user from range D C B B+ A A+ S S+ dependant on the amount of commits from commit count range [0 - 3000]
@@ -355,6 +367,36 @@ export default async function handler(
 					</text>
 				</g>
 			</svg>
+
+			{/* vertical line */}
+			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
+				<g className="item" transform="translate(0, 0)">
+					<line
+						x1="320"
+						y1="10"
+						x2="320"
+						y2="250"
+						style={{ stroke: '#ccc', strokeWidth: 2 }}
+					/>
+				</g>
+			</svg>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="25"
+				height="25"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				x="340"
+				y="17"
+			>
+				<polyline points="16 18 22 12 16 6"></polyline>
+				<polyline points="8 6 2 12 8 18"></polyline>
+			</svg>
+			<text xmlns="http://www.w3.org/2000/svg" className="title" x="370" y="35">
+				Top Languages
+			</text>
 		</svg>
 	)
 	const svg = ReactDomServer.renderToString(svgimage)
