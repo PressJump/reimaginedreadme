@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@next/font": "13.1.1",
+    "@octokit/graphql": "^5.0.4",
+    "@octokit/rest": "^19.0.5",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
