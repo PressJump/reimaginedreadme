@@ -10,25 +10,31 @@ type UserData = {
 }
 
 type Data = {
-	username: string
-	thisyear: number
-	thismonth: number
-	thisweek: number
-	pullrequests: number
-	issues: number
-	ranking: string
+	error?: {
+		message: string
+	}
+	user?: {
+		username: string
+		thisyear: number
+		thismonth: number
+		thisweek: number
+		pullrequests: number
+		issues: number
+		ranking: string
+	}
 }
 
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
 ) {
-	//get the time it was 12 months ago
+	const username = req.query.username
+
 	const date = new Date()
 	date.setMonth(date.getMonth() - 12)
 	//query get all commits, issues, pullrequests and code reviews last 12 months
 	const query = `query {
-		user(login: "PressJump") {
+		user(login: "${username}") {
 			contributionsCollection(from: "${date.toISOString()}", to: "${new Date().toISOString()}") {
 			totalIssueContributions
 			totalPullRequestContributions
@@ -50,6 +56,15 @@ export default async function handler(
 			authorization: `token ${process.env.GITHUB_TOKEN}`,
 		},
 	})
+
+	//error
+	if (resp.user === null) {
+		return res.status(404).json({
+			error: {
+				message: 'User not found',
+			},
+		})
+	}
 
 	const UserData: UserData = {
 		thisyear:
@@ -79,12 +94,14 @@ export default async function handler(
 	}
 
 	res.status(200).json({
-		username: 'PressJump',
-		thisyear: UserData.thisyear,
-		thismonth: UserData.thismonth,
-		thisweek: UserData.thisweek,
-		pullrequests: UserData.pullrequests,
-		issues: UserData.issues,
-		ranking: ranking()!,
+		user: {
+			username: 'PressJump',
+			thisyear: UserData.thisyear,
+			thismonth: UserData.thismonth,
+			thisweek: UserData.thisweek,
+			pullrequests: UserData.pullrequests,
+			issues: UserData.issues,
+			ranking: ranking()!,
+		},
 	})
 }
