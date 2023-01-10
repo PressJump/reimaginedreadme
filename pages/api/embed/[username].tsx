@@ -17,16 +17,6 @@ type Data = {
 	error?: {
 		message: string
 	}
-	user?: {
-		username: string
-		thisyear: number
-		thismonth: number
-		thisweek: number
-		pullrequests: number
-		issues: number
-		ranking: string
-	}
-	message?: any
 }
 
 export default async function handler(
@@ -105,9 +95,11 @@ export default async function handler(
 			resp.user.contributionsCollection.contributionCalendar.totalContributions,
 		thismonth: resp.user.contributionsCollection.contributionCalendar.weeks[
 			resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
+			// @ts-ignore
 		].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
 		thisweek: resp.user.contributionsCollection.contributionCalendar.weeks[
 			resp.user.contributionsCollection.contributionCalendar.weeks.length - 1
+			// @ts-ignore
 		].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
 		pullrequests:
 			resp.user.contributionsCollection.totalPullRequestContributions,
@@ -140,6 +132,7 @@ export default async function handler(
 	}, {})
 
 	const topLanguages = Object.entries(languageCount)
+		// @ts-ignore
 		.sort((a, b) => b[1] - a[1])
 		.slice(0, 4)
 
@@ -300,5 +293,6 @@ export default async function handler(
 	)
 	const svg = ReactDomServer.renderToString(svgimage)
 	res.setHeader('Content-Type', 'image/svg+xml')
+	// @ts-ignore
 	res.send(svg)
 }
