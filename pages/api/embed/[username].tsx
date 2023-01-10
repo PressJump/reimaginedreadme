@@ -176,6 +176,10 @@ export default async function handler(
 					font-size: 11px;
 				}
 
+				.updatetime {
+					font-size: 8px;
+				}
+
 				.repo-origin {
 					font-size: 10px;
 				}
@@ -210,6 +214,11 @@ export default async function handler(
 				.bolder {
 					font-weight: 700;
 					font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
+				}
+
+				.link {
+					font: bold;
+					fill: rgb(0, 102, 255);
 				}
 
 				@keyframes scaleIn {
@@ -270,10 +279,25 @@ export default async function handler(
 
 			<Usertoplangspanel topLanguages={topLanguages} />
 
-			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="210">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				xmlnsXlink="http://www.w3.org/1999/xlink"
+				x="0"
+				y="200"
+			>
 				<g className="item" transform="translate(25, 15)">
 					<text className="contribution-stats remarks" x="0" y="0">
-						Last updated on {new Date().toUTCString()}
+						Do you like how this widget looks or want to show your GitHub
+						Statistics?{' '}
+						<a
+							href="https://github.com/PressJump/reimaginedreadme"
+							className="link"
+						>
+							Get it for yourself.
+						</a>
+					</text>
+					<text className="contribution-stats updatetime" y="12">
+						Last updated on {new Date().toUTCString()}.
 					</text>
 				</g>
 			</svg>
