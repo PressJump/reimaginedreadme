@@ -246,7 +246,7 @@ export default async function handler(
 				xmlns="http://www.w3.org/2000/svg"
 				x="0.5"
 				y="0.5"
-				rx="5"
+				rx="12"
 				width="679"
 				height="100%"
 				fill="#efefef"
