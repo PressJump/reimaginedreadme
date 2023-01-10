@@ -9,7 +9,11 @@ const whitelist: MapType = {
 	css: 'css3',
 }
 
-export const Usertoplangspanel = ({ topLanguages }: { topLanguages: JSON }) => {
+export const Usertoplangspanel = ({
+	topLanguages,
+}: {
+	topLanguages: Object
+}) => {
 	return (
 		<>
 			<svg
