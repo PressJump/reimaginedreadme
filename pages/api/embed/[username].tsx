@@ -26,6 +26,7 @@ export default async function handler(
 	res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate')
 
 	const username = req.query.username?.toString()
+	const color = req.query.color?.toString()
 
 	const date = new Date()
 	date.setMonth(date.getMonth() - 12)
@@ -179,7 +180,7 @@ export default async function handler(
 					font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
 					font-size: 38px;
 					font-weight: 700;
-					fill: #eacb2f;
+					fill: #${color || 'eacb2f'};
 					animation: scaleIn 0.3s ease-in-out forwards;
 				}
 
@@ -191,7 +192,7 @@ export default async function handler(
 				}
 
 				.rating-circle {
-					stroke: #eacb2f;
+					stroke: #${color || 'eacb2f'};
 					stroke-dasharray: 250;
 					stroke-width: 7.5;
 					stroke-linecap: round;
