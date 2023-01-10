@@ -240,7 +240,7 @@ export default async function handler(
 				}`
 
 	const svgimage = (
-		<svg xmlns="http://www.w3.org/2000/svg" width="679" height="265">
+		<svg xmlns="http://www.w3.org/2000/svg" width="679" height="240">
 			<style>${style}</style>
 			<rect
 				xmlns="http://www.w3.org/2000/svg"
@@ -260,15 +260,23 @@ export default async function handler(
 				<g className="item" transform="translate(0, 0)">
 					<line
 						x1="320"
-						y1="10"
+						y1="40"
 						x2="320"
-						y2="250"
+						y2="200"
 						style={{ stroke: '#ccc', strokeWidth: 2 }}
 					/>
 				</g>
 			</svg>
 
 			<Usertoplangspanel topLanguages={topLanguages} />
+
+			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="210">
+				<g className="item" transform="translate(25, 15)">
+					<text className="contribution-stats remarks" x="0" y="0">
+						Last updated on {new Date().toUTCString()}
+					</text>
+				</g>
+			</svg>
 		</svg>
 	)
 	const svg = ReactDomServer.renderToString(svgimage)

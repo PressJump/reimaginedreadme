@@ -157,14 +157,6 @@ export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
 					</text>
 				</g>
 			</svg>
-
-			<svg xmlns="http://www.w3.org/2000/svg" x="-6" y="224">
-				<g className="item" transform="translate(25, 15)">
-					<text className="contribution-stats remarks" x="0" y="0">
-						Remarks: The contributor stats score rating is Excellent!
-					</text>
-				</g>
-			</svg>
 		</>
 	)
 }
