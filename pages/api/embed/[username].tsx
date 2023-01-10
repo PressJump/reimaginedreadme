@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-//reactdomserver
 import ReactDomServer from 'react-dom/server'
 import { Userstatspanel, Usertoplangspanel } from '../../../components'
 
@@ -34,7 +33,6 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
 ) {
-	//cache for 1 hour
 	res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate')
 
 	const username = req.query.username?.toString()
@@ -295,9 +293,6 @@ export default async function handler(
 						>
 							Get it for yourself.
 						</a>
-					</text>
-					<text className="contribution-stats updatetime" y="12">
-						Last updated on {new Date().toUTCString()}.
 					</text>
 				</g>
 			</svg>
