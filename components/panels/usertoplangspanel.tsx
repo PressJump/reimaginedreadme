@@ -8,6 +8,7 @@ type MapType = {
 const whitelist: MapType = {
 	html: 'html5',
 	css: 'css3',
+	shell: 'bash',
 }
 
 export const Usertoplangspanel = ({
