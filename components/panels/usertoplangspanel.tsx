@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { type } from 'os'
 
 type MapType = {
 	[key: string]: string
@@ -12,7 +13,7 @@ const whitelist: MapType = {
 export const Usertoplangspanel = ({
 	topLanguages,
 }: {
-	topLanguages: Object
+	topLanguages: Array<any>
 }) => {
 	return (
 		<>
