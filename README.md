@@ -2,17 +2,9 @@
 <img width="120" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/558ab792aec59eb639671d41c5666ef12f6d0d80/assets/Writing%20hand/Light/3D/writing_hand_3d_light.png"/>
 
 ## Reimagined Readme
-GitHub readme widgets are too seperated and you need to add 4 different widgets with all different styles to show your GitHub statistics. ***Reimagined Readme*** tries to fix this problem.
+GitHub readme widgets are too seperated and you need to add 4 different widgets with all different styles to show your GitHub statistics. ***Reimagined Readme*** tries to fix this problem. This project is currently very experimental as I am working on this to get rid of burnout and learn new things like the GitHub GraphQL API.
 
 </div>
-
-
-
-
-
-
-
-This project is currently very experimental as I am working on this to get rid of burnout and learn new things like the GitHub GraphQL API.
 
 ### Example Widget:
 [![reimaginedreadme](https://myreadme.vercel.app/api/embed/PressJump)](https://github.com/PressJump/reimaginedreadme)
