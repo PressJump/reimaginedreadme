@@ -1,7 +1,6 @@
 type DevSVG = {
 	[key: string]: JSX.Element
 }
-
 export const devsvg = {
 	html: (
 		<svg viewBox="0 0 128 128" height="27" width="27">
