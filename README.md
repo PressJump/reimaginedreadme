@@ -7,6 +7,11 @@ GitHub readme widgets are too seperated and you need to add 4 different widgets 
 </div>
 
 
+
+
+
+
+
 This project is currently very experimental as I am working on this to get rid of burnout and learn new things like the GitHub GraphQL API.
 
 ### Example Widget:
