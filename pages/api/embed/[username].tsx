@@ -112,7 +112,11 @@ export default async function handler(
 
 	const commitRange = 1500 - 0
 	const progressRange = 0 - 250
-	const progress = ((UserData.thisyear - 0) * progressRange) / commitRange + 250
+	const progress = Math.min(
+		Math.max(((UserData.thisyear - 0) * progressRange) / commitRange + 250, 0),
+		250
+	)
+
 	const repositories =
 		resp.user.contributionsCollection.commitContributionsByRepository
 
