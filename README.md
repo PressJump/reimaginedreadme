@@ -1,36 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
+<img width="120" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/558ab792aec59eb639671d41c5666ef12f6d0d80/assets/Writing%20hand/Light/3D/writing_hand_3d_light.png"/>
 
-## Getting Started
+## Reimagined Readme
+GitHub readme widgets are too seperated and you need to add 4 different widgets with all different styles to show your GitHub statistics. ***Reimagined Readme*** tries to fix this problem.
 
-First, run the development server:
+</div>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This project is currently very experimental as I am working on this to get rid of burnout and learn new things like the GitHub GraphQL API.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Example Widget:
+[![reimaginedreadme](https://myreadme.vercel.app/api/embed/PressJump)](https://github.com/PressJump/reimaginedreadme)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Credits:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+ - **[github-contribution-stats](https://github.com/LordDashMe/github-contribution-stats)** [\[MIT\]](https://github.com/LordDashMe/github-contribution-stats/blob/master/LICENSE) - A SVG Based Github Contribution Stats Project (Used as base for SVG)
+ - **[devicon](https://github.com/devicons/devicon)** [\[MIT\]](https://github.com/devicons/devicon/blob/master/LICENSE) - Developer Icons (Used for Language Logos)
+ - **[Fluent Emoji by Microsoft](https://github.com/microsoft/fluentui-emoji)** [\[MIT\]](https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE) There is an [ongoing conversation](https://github.com/microsoft/fluentui-emoji/issues/18) regarding the license. - Modern Emoji's (Used as the logo)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
