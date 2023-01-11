@@ -1,15 +1,6 @@
 import Head from 'next/head'
 import { type } from 'os'
-
-type MapType = {
-	[key: string]: string
-}
-
-const whitelist: MapType = {
-	html: 'html5',
-	css: 'css3',
-	shell: 'bash',
-}
+import { devsvg } from '../../utils/devsvg'
 
 export const Usertoplangspanel = ({
 	topLanguages,
@@ -41,24 +32,14 @@ export const Usertoplangspanel = ({
 					<svg
 						key={index}
 						xmlns="http://www.w3.org/2000/svg"
-						x="370"
-						y={index * 35 + 35}
+						x="350"
+						y={index * 42 + 42}
 					>
 						<g className="item" transform="translate(3, 2)">
-							<image
-								href={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${
-									whitelist[lang[0].toLowerCase()] || lang[0].toLowerCase()
-								}/${
-									(whitelist[lang[0].toLowerCase()] || lang[0].toLowerCase()) +
-									'-original.svg'
-								}`}
-								width="27"
-								height="27"
-								y="15"
-							/>
+							{devsvg[lang[0].toLowerCase()]}
 						</g>
 						<g id="toplangfirst" className="item" transform="translate(25, 35)">
-							<text className="contribution-stats" x="15" y="0">
+							<text className="contribution-stats" x="15" y="-15">
 								{lang[0]}
 							</text>
 						</g>
