@@ -23,7 +23,12 @@ export const Usertoplangspanel = ({
 				<polyline points="16 18 22 12 16 6"></polyline>
 				<polyline points="8 6 2 12 8 18"></polyline>
 			</svg>
-			<text xmlns="http://www.w3.org/2000/svg" className="title" x="370" y="35">
+			<text
+				xmlns="http://www.w3.org/2000/svg"
+				className="title bolder"
+				x="370"
+				y="35"
+			>
 				Top Languages
 			</text>
 
