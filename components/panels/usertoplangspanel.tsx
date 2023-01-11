@@ -41,6 +41,7 @@ export const Usertoplangspanel = ({
 						y={index * 42 + 42}
 					>
 						<g className="item" transform="translate(3, 2)">
+							{/*@ts-ignore*/}
 							{devsvg[lang[0].toLowerCase()]}
 						</g>
 						<g id="toplangfirst" className="item" transform="translate(25, 35)">
