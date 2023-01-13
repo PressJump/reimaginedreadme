@@ -162,9 +162,9 @@ export const container = (
 			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
 				<g className="item" transform="translate(0, 0)">
 					<line
-						x1={width}
+						x1={width + 1}
 						y1="40"
-						x2={width}
+						x2={width + 1}
 						y2="200"
 						style={{ stroke: '#d9d9d9', strokeWidth: 1 }}
 					/>
