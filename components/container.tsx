@@ -175,14 +175,14 @@ export const container = (
 
 	return (
 		<>
-			<svg xmlns="http://www.w3.org/2000/svg" width="846" height="240">
+			<svg xmlns="http://www.w3.org/2000/svg" width={width} height="240">
 				<style>${style}</style>
 				<rect
 					xmlns="http://www.w3.org/2000/svg"
 					x="0.5"
 					y="0.5"
 					rx="12"
-					width="846"
+					width={width}
 					height="100%"
 					fill="#efefef"
 					stroke="#e1e4e8"
