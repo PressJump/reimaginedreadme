@@ -140,12 +140,27 @@ export const container = (
 			const panelComponent = (
 				<Usertoplangspanel
 					topLanguages={userData.toplang!}
-					componentx={Number(width.toString())}
+					componentx={Number(width.toString()) + 10}
 				/>
 			)
-			width += 150
+			width += 170
 			panelComponents.push(panelComponent)
 		}
+
+		//Insert a divider between panels
+		panelComponents.push(
+			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
+				<g className="item" transform="translate(0, 0)">
+					<line
+						x1={width}
+						y1="40"
+						x2={width}
+						y2="200"
+						style={{ stroke: '#ccc', strokeWidth: 1 }}
+					/>
+				</g>
+			</svg>
+		)
 	})
 
 	return (
@@ -164,19 +179,6 @@ export const container = (
 				/>
 
 				{panelComponents}
-
-				{/* vertical line
-                <svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
-                    <g className="item" transform="translate(0, 0)">
-                        <line
-                            x1="320"
-                            y1="40"
-                            x2="320"
-                            y2="200"
-                            style={{ stroke: '#ccc', strokeWidth: 2 }}
-                        />
-                    </g>
-                </svg> */}
 
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

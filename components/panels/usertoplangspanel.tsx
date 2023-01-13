@@ -9,7 +9,6 @@ export const Usertoplangspanel = ({
 	topLanguages: [string, unknown][]
 	componentx: number
 }) => {
-	console.log(topLanguages)
 	return (
 		<>
 			<svg
