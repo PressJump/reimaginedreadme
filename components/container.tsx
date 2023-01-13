@@ -131,7 +131,7 @@ export const container = (
 					componentx={Number(width.toString())}
 				/>
 			)
-			width += 320
+			width += 310
 			panelComponents.push(panelComponent)
 		}
 
@@ -139,10 +139,10 @@ export const container = (
 			const panelComponent = (
 				<Usertoplangspanel
 					topLanguages={userData.toplang!}
-					componentx={Number(width.toString()) + 20}
+					componentx={Number(width.toString()) + 7}
 				/>
 			)
-			width += 190
+			width += 170
 			panelComponents.push(panelComponent)
 		}
 
@@ -150,10 +150,10 @@ export const container = (
 			const panelComponent = (
 				<Usertoprepositoriespanel
 					topRepositories={userData.toprepos!}
-					componentx={Number(width.toString()) + 20}
+					componentx={Number(width.toString()) + 7}
 				/>
 			)
-			width += 200
+			width += 180
 			panelComponents.push(panelComponent)
 		}
 
