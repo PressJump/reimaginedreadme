@@ -57,6 +57,7 @@ export const Usertoprepositoriespanel = ({
 						</g>
 						<g id="toplangfirst" className="item" transform="translate(25, 35)">
 							<text className="contribution-stats" x="8" y="-15">
+								{/* @ts-ignore */}
 								{repo.name}
 							</text>
 						</g>
