@@ -73,6 +73,31 @@ export default function Home() {
 						</div>
 					</div>
 				</section>
+
+				<footer className="p-4 flex items-center justify-center">
+					<span className="text-sm px-2 text-gray-500 sm:text-center dark:text-gray-400">
+						© 2023{' '}
+						<a href="https://flowbite.com/" className="hover:underline">
+							Reimagined Readme
+						</a>
+						. All Rights Reserved.
+					</span>
+					<ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+						<li>
+							<a href="./privacy" className="mr-4 hover:underline md:mr-6">
+								Privacy Policy
+							</a>
+						</li>
+						<li>
+							<a
+								href="https://github.com/PressJump/reimaginedreadme"
+								className="hover:underline"
+							>
+								GitHub
+							</a>
+						</li>
+					</ul>
+				</footer>
 			</body>
 		</>
 	)
