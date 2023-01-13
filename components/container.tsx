@@ -166,7 +166,7 @@ export const container = (
 						y1="40"
 						x2={width}
 						y2="200"
-						style={{ stroke: '#ccc', strokeWidth: 1 }}
+						style={{ stroke: '#d9d9d9', strokeWidth: 1 }}
 					/>
 				</g>
 			</svg>
