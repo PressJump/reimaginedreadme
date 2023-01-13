@@ -13,9 +13,16 @@ type UserData = {
 	toprepos?: [string, unknown][]
 }
 
+type PanelProps = {
+	color?: string
+	titlecolor?: string
+	textcolor?: string
+	bgcolor?: string
+}
+
 export const container = (
 	userData: UserData,
-	color: string,
+	panelProps: PanelProps,
 	panels: string[]
 ) => {
 	console.log(userData)
@@ -28,7 +35,7 @@ export const container = (
             font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
             font-size: 20px;
             font-weight: 400;
-            fill: #000;
+            fill: #${panelProps.titlecolor ? panelProps.titlecolor : '000'};
             animation: fadeIn 0.8s ease-in-out forwards;
         }
 
@@ -41,7 +48,7 @@ export const container = (
             font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
             font-weight: 400;
             font-size: 14px;
-            fill: #333;
+            fill: #${panelProps.textcolor ? panelProps.textcolor : '333'};
         }
 
         .remarks {
@@ -60,7 +67,7 @@ export const container = (
             font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
             font-size: 38px;
             font-weight: 700;
-            fill: #${color || 'eacb2f'};
+            fill: #${panelProps.color ? panelProps.color : 'eacb2f'};
             animation: scaleIn 0.3s ease-in-out forwards;
         }
 
@@ -72,7 +79,7 @@ export const container = (
         }
 
         .rating-circle {
-            stroke: #${color || 'eacb2f'};
+            stroke: #${panelProps.color ? panelProps.color : 'eacb2f'};
             stroke-dasharray: 250;
             stroke-width: 7.5;
             stroke-linecap: round;
@@ -184,7 +191,7 @@ export const container = (
 					rx="12"
 					width={width}
 					height="100%"
-					fill="#efefef"
+					fill={panelProps.bgcolor ? `#${panelProps.bgcolor}` : '#efefef'}
 					stroke="#e1e4e8"
 				/>
 

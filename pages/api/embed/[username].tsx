@@ -22,6 +22,13 @@ type Data = {
 	}
 }
 
+type PanelProps = {
+	color?: string
+	titlecolor?: string
+	textcolor?: string
+	bgcolor?: string
+}
+
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
@@ -30,8 +37,12 @@ export default async function handler(
 
 	const username = req.query.username?.toString()
 	const color = req.query.color?.toString()
+	const titlecolor = req.query.titlecolor?.toString()
+	const textcolor = req.query.textcolor?.toString()
+	const bgcolor = req.query.bgcolor?.toString()
 	const panels = req.query.panels?.toString().split(',')
 	let userData: UserData = {}
+	const panelProps: PanelProps = { color, titlecolor, textcolor, bgcolor }
 
 	if (!panels) {
 		res
@@ -171,7 +182,9 @@ export default async function handler(
 		userData.toprepos = topRepos
 	}
 
-	const svg = ReactDomServer.renderToString(container(userData, color, panels))
+	const svg = ReactDomServer.renderToString(
+		container(userData, panelProps, panels!)
+	)
 	res.setHeader('Content-Type', 'image/svg+xml')
 	// @ts-ignore
 	res.send(svg)
