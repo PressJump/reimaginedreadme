@@ -153,7 +153,7 @@ export const container = (
 					componentx={Number(width.toString()) + 20}
 				/>
 			)
-			width += 230
+			width += 200
 			panelComponents.push(panelComponent)
 		}
 
