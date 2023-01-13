@@ -182,7 +182,7 @@ export const container = (
 
 	return (
 		<>
-			<svg xmlns="http://www.w3.org/2000/svg" width={width} height="240">
+			<svg xmlns="http://www.w3.org/2000/svg" width={width} height="230">
 				<style>${style}</style>
 				<rect
 					xmlns="http://www.w3.org/2000/svg"
@@ -205,8 +205,7 @@ export const container = (
 				>
 					<g className="item" transform="translate(25, 15)">
 						<text className="contribution-stats remarks" x="0" y="0">
-							Do you like how this widget looks or want to show your GitHub
-							Statistics?{' '}
+							Do you like how this widget looks?{' '}
 							<a
 								href="https://github.com/PressJump/reimaginedreadme"
 								className="link"
