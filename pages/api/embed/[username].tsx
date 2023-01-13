@@ -13,6 +13,7 @@ type UserData = {
 	ranking?: string
 	progress?: number
 	toplang?: [string, unknown][]
+	toprepos?: [string, unknown][]
 }
 
 type Data = {
@@ -58,6 +59,8 @@ export default async function handler(
 
 			commitContributionsByRepository {
 				repository {
+					name
+					stargazerCount
 					languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
 						edges {
 							size
@@ -130,7 +133,6 @@ export default async function handler(
 	if (panels!.includes('toplanguages')) {
 		const repositories =
 			resp.user.contributionsCollection.commitContributionsByRepository
-
 		const languages = repositories.map((repo: any) => {
 			const lang = repo.repository.languages.edges.map((lang: any) => {
 				return {
@@ -151,6 +153,22 @@ export default async function handler(
 			// @ts-ignore
 			.sort((a, b) => b[1] - a[1])
 			.slice(0, 4)
+	}
+
+	if (panels!.includes('toprepositories')) {
+		const repositories =
+			resp.user.contributionsCollection.commitContributionsByRepository
+		const topRepos = repositories
+			.map((repo: any) => {
+				return {
+					name: repo.repository.name,
+					stars: repo.repository.stargazerCount,
+				}
+			})
+			// @ts-ignore
+			.sort((a, b) => b.stars - a.stars)
+			.slice(0, 4)
+		userData.toprepos = topRepos
 	}
 
 	const svg = ReactDomServer.renderToString(container(userData, color, panels))

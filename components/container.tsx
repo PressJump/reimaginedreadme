@@ -1,5 +1,5 @@
 import { stdout } from 'process'
-import { Userstatspanel, Usertoplangspanel } from '.'
+import { Userstatspanel, Usertoplangspanel, Usertoprepositoriespanel } from '.'
 
 type UserData = {
 	thisyear?: number
@@ -10,6 +10,7 @@ type UserData = {
 	ranking?: string
 	progress?: number
 	toplang?: [string, unknown][]
+	toprepos?: [string, unknown][]
 }
 
 export const container = (
@@ -120,8 +121,6 @@ export const container = (
         }`
 
 	let width = 0
-	let maxw = 846
-	let avgwfc = 570
 
 	let panelComponents: JSX.Element[] = []
 	panels.forEach((panel) => {
@@ -147,6 +146,17 @@ export const container = (
 			panelComponents.push(panelComponent)
 		}
 
+		if (panel === 'toprepositories') {
+			const panelComponent = (
+				<Usertoprepositoriespanel
+					topRepositories={userData.toprepos!}
+					componentx={Number(width.toString()) + 20}
+				/>
+			)
+			width += 230
+			panelComponents.push(panelComponent)
+		}
+
 		//Insert a divider between panels
 		panelComponents.push(
 			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
@@ -165,14 +175,14 @@ export const container = (
 
 	return (
 		<>
-			<svg xmlns="http://www.w3.org/2000/svg" width="679" height="240">
+			<svg xmlns="http://www.w3.org/2000/svg" width="846" height="240">
 				<style>${style}</style>
 				<rect
 					xmlns="http://www.w3.org/2000/svg"
 					x="0.5"
 					y="0.5"
 					rx="12"
-					width="679"
+					width="846"
 					height="100%"
 					fill="#efefef"
 					stroke="#e1e4e8"
