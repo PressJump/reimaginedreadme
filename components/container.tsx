@@ -140,10 +140,10 @@ export const container = (
 			const panelComponent = (
 				<Usertoplangspanel
 					topLanguages={userData.toplang!}
-					componentx={Number(width.toString()) + 10}
+					componentx={Number(width.toString()) + 20}
 				/>
 			)
-			width += 170
+			width += 190
 			panelComponents.push(panelComponent)
 		}
 
