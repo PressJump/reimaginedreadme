@@ -3,7 +3,7 @@ type DevSVG = {
 }
 export const devsvg = {
 	html: (
-		<svg viewBox="0 0 128 128" height="27" width="27">
+		<svg viewBox="0 0 128 128" height="25" width="25">
 			<path
 				fill="#E44D26"
 				d="M19.037 113.876L9.032 1.661h109.936l-10.016 112.198-45.019 12.48z"
@@ -20,7 +20,7 @@ export const devsvg = {
 		</svg>
 	),
 	typescript: (
-		<svg viewBox="0 0 128 128" height="27" width="27">
+		<svg viewBox="0 0 128 128" height="25" width="25">
 			<path fill="#fff" d="M22.67 47h99.67v73.67H22.67z"></path>
 			<path
 				data-name="original"
@@ -30,7 +30,7 @@ export const devsvg = {
 		</svg>
 	),
 	css: (
-		<svg viewBox="0 0 128 128" height="27" width="27">
+		<svg viewBox="0 0 128 128" height="25" width="25">
 			<path
 				fill="#1572B6"
 				d="M18.814 114.123L8.76 1.352h110.48l-10.064 112.754-45.243 12.543-45.119-12.526z"
@@ -58,7 +58,7 @@ export const devsvg = {
 		</svg>
 	),
 	javascript: (
-		<svg viewBox="0 0 128 128" height="27" width="27">
+		<svg viewBox="0 0 128 128" height="25" width="25">
 			<path fill="#F0DB4F" d="M1.408 1.408h125.184v125.185H1.408z"></path>
 			<path
 				fill="#323330"
@@ -67,7 +67,7 @@ export const devsvg = {
 		</svg>
 	),
 	java: (
-		<svg viewBox="0 0 128 128" height="27" width="27">
+		<svg viewBox="0 0 128 128" height="25" width="25">
 			<path fill="#F0DB4F" d="M1.408 1.408h125.184v125.185H1.408z"></path>
 			<path
 				fill="#323330"

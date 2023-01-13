@@ -39,11 +39,11 @@ export const Usertoprepositoriespanel = ({
 					<svg
 						key={index}
 						xmlns="http://www.w3.org/2000/svg"
-						x={componentx + 10}
-						y={index * 42 + 42}
+						x={componentx + 5}
+						y={index * 37 + 50}
 					>
 						<g className="item" transform="translate(3, 2)">
-							<svg viewBox="0 0 128 128" height="25" width="25">
+							<svg viewBox="0 0 128 128" height="23" width="22">
 								<g fill="#181616">
 									<path
 										fill-rule="evenodd"
@@ -55,8 +55,8 @@ export const Usertoprepositoriespanel = ({
 							</svg>
 						</g>
 						<g id="toplangfirst" className="item" transform="translate(25, 35)">
-							<text className="contribution-stats" x="15" y="-15">
-								{repo['name']}
+							<text className="contribution-stats" x="8" y="-15">
+								{repo.name}
 							</text>
 						</g>
 					</svg>
