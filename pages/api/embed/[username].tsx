@@ -77,7 +77,7 @@ export default async function handler(
 			
 
 			${
-				panels.includes('toplanguages')
+				panels.includes('toplanguages') || panels.includes('toprepositories')
 					? `commitContributionsByRepository {
 						repository {
 							name
