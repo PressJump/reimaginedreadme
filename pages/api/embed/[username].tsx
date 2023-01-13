@@ -44,8 +44,10 @@ export default async function handler(
 	let userData: UserData = {}
 	const panelProps: PanelProps = { color, titlecolor, textcolor, bgcolor }
 
-	if (!panels) {
-		res
+	const validPanels = ['userstatistics', 'toplanguages', 'toprepositories']
+
+	if (!panels || panels.some((panel) => !validPanels.includes(panel))) {
+		return res
 			.status(400)
 			.json({ error: { message: 'The "panels" query parameter is required' } })
 	}
@@ -56,34 +58,45 @@ export default async function handler(
 	const query = `query {
 		user(login: "${username}") {
 			contributionsCollection(from: "${date.toISOString()}", to: "${new Date().toISOString()}") {
-			totalIssueContributions
-			totalPullRequestContributions
-			contributionCalendar {
-				totalContributions
-				weeks {
-					contributionDays {
-						contributionCount
-						date
-					}
-				}
-			}
 
-			commitContributionsByRepository {
-				repository {
-					name
-					stargazerCount
-					languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
-						edges {
-							size
-							node {
-							color
-							name
-							id
+			${
+				panels.includes('userstatistics')
+					? `totalIssueContributions
+					totalPullRequestContributions
+					contributionCalendar {
+						totalContributions
+						weeks {
+							contributionDays {
+								contributionCount
+								date
 							}
 						}
-					}
-				}
+					}`
+					: ''
+			}	
+			
+
+			${
+				panels.includes('toplanguages')
+					? `commitContributionsByRepository {
+						repository {
+							name
+							stargazerCount
+							languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
+								edges {
+									size
+									node {
+									color
+									name
+									id
+									}
+								}
+							}
+						}
+					}`
+					: ''
 			}
+			
 
 			}
 		}
