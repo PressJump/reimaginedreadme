@@ -4,9 +4,12 @@ import { devsvg } from '../../utils/devsvg'
 
 export const Usertoplangspanel = ({
 	topLanguages,
+	componentx,
 }: {
-	topLanguages: Array<any>
+	topLanguages: [string, unknown][]
+	componentx: number
 }) => {
+	console.log(topLanguages)
 	return (
 		<>
 			<svg
@@ -17,7 +20,7 @@ export const Usertoplangspanel = ({
 				fill="none"
 				stroke="currentColor"
 				stroke-width="2"
-				x="340"
+				x={componentx}
 				y="17"
 			>
 				<polyline points="16 18 22 12 16 6"></polyline>
@@ -26,7 +29,7 @@ export const Usertoplangspanel = ({
 			<text
 				xmlns="http://www.w3.org/2000/svg"
 				className="title bolder"
-				x="370"
+				x={componentx + 30}
 				y="35"
 			>
 				Top Languages
@@ -37,7 +40,7 @@ export const Usertoplangspanel = ({
 					<svg
 						key={index}
 						xmlns="http://www.w3.org/2000/svg"
-						x="350"
+						x={componentx + 10}
 						y={index * 42 + 42}
 					>
 						<g className="item" transform="translate(3, 2)">

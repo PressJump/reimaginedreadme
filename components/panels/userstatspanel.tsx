@@ -1,15 +1,23 @@
 import Head from 'next/head'
 
 type UserData = {
-	thisyear: number
-	thismonth: number
-	thisweek: number
-	pullrequests: number
-	issues: number
-	ranking: string
+	thisyear?: number
+	thismonth?: number
+	thisweek?: number
+	pullrequests?: number
+	issues?: number
+	ranking?: string
+	progress?: number
+	toplang?: [string, unknown][]
 }
 
-export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
+export const Userstatspanel = ({
+	userData,
+	componentx,
+}: {
+	userData: UserData
+	componentx: number
+}) => {
 	return (
 		<>
 			<g
@@ -17,22 +25,27 @@ export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
 				id="ratings"
 				transform="translate(265, 115)"
 			>
-				<circle className="rating-circle-stroke" cx="-10" cy="8" r="38" />
-				<circle className="rating-circle" cx="-10" cy="8" r="38" />
+				<circle
+					className="rating-circle-stroke"
+					cx={componentx - 10}
+					cy="8"
+					r="38"
+				/>
+				<circle className="rating-circle" cx="-10" cy={componentx + 8} r="38" />
 				<text
 					className="rating-letter-sign"
-					x="-5"
+					x={componentx - 5}
 					y="1.5"
 					text-anchor="middle"
 					alignment-baseline="central"
 					dominant-baseline="central"
 				>
-					{UserData.ranking}
+					{userData.ranking}
 				</text>
 			</g>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				x="23"
+				x={componentx + 23}
 				y="17"
 				width="25px"
 				height="25px"
@@ -46,12 +59,12 @@ export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
 			<text
 				xmlns="http://www.w3.org/2000/svg"
 				className="title bolder"
-				x="54"
+				x={componentx + 50}
 				y="35"
 			>
 				Contribution Stats
 			</text>
-			<svg xmlns="http://www.w3.org/2000/svg" x="30" y="50">
+			<svg xmlns="http://www.w3.org/2000/svg" x={componentx + 30} y="50">
 				<g className="item" transform="translate(3, 2)">
 					<svg
 						width="16"
@@ -72,7 +85,7 @@ export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
 					</text>
 				</g>
 			</svg>
-			<svg xmlns="http://www.w3.org/2000/svg" x="35" y="75">
+			<svg xmlns="http://www.w3.org/2000/svg" x={componentx + 35} y="75">
 				<g
 					id="this_year_commits"
 					className="item"
@@ -82,7 +95,7 @@ export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
 						This Year:
 					</text>
 					<text className="contribution-stats bolder" x="101" y="0">
-						{UserData.thisyear}
+						{userData.thisyear}
 					</text>
 				</g>
 				<g
@@ -94,7 +107,7 @@ export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
 						This Month:
 					</text>
 					<text className="contribution-stats bolder" x="101" y="5">
-						{UserData.thismonth}
+						{userData.thismonth}
 					</text>
 				</g>
 				<g
@@ -106,11 +119,11 @@ export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
 						This Week:
 					</text>
 					<text className="contribution-stats bolder" x="101" y="10">
-						{UserData.thisweek}
+						{userData.thisweek}
 					</text>
 				</g>
 			</svg>
-			<svg xmlns="http://www.w3.org/2000/svg" x="30" y="150">
+			<svg xmlns="http://www.w3.org/2000/svg" x={componentx + 30} y="150">
 				<g className="item" transform="translate(3, 2)">
 					<svg
 						width="16"
@@ -134,11 +147,11 @@ export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
 						Pull Requests:
 					</text>
 					<text className="contribution-stats bolder" x="106" y="0">
-						{UserData.pullrequests}
+						{userData.pullrequests}
 					</text>
 				</g>
 			</svg>
-			<svg xmlns="http://www.w3.org/2000/svg" x="30" y="175">
+			<svg xmlns="http://www.w3.org/2000/svg" x={componentx + 30} y="175">
 				<g className="item" transform="translate(3, 2)">
 					<svg
 						width="16"
@@ -158,7 +171,7 @@ export const Userstatspanel = ({ UserData }: { UserData: UserData }) => {
 						Issues:
 					</text>
 					<text className="contribution-stats bolder" x="106" y="0">
-						{UserData.pullrequests}
+						{userData.pullrequests}
 					</text>
 				</g>
 			</svg>
