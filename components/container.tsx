@@ -188,8 +188,8 @@ export const container = (
 					x="0.5"
 					y="0.5"
 					rx="12"
-					width={width}
-					height="100%"
+					width={width - 1}
+					height="229"
 					fill={panelProps.bgcolor ? `#${panelProps.bgcolor}` : '#efefef'}
 					stroke="#e1e4e8"
 				/>
