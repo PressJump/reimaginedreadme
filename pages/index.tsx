@@ -4,7 +4,6 @@ import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import widgetpreview from '../public/svgwidgetpreview.svg'
 import wizardhand from '../public/wizardhand.png'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -55,12 +54,12 @@ export default function Home() {
 							repos, recent activity, and more.
 						</p>
 						<div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-							<a
+							{/* <a
 								href="#"
 								className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-neutral-900 rounded-lg border border-neutral-300 hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-100 dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 dark:focus:ring-neutral-800"
 							>
 								Customize Readme
-							</a>
+							</a> */}
 						</div>
 						<div className="px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-lg lg:px-36">
 							<div className="flex items-center justify-center ">
