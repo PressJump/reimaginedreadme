@@ -44,6 +44,11 @@ export default async function handler(
 	let userData: UserData = {}
 	const panelProps: PanelProps = { color, titlecolor, textcolor, bgcolor }
 
+	//username will exist but we should validate username
+	if (!username || !/^[a-zA-Z0-9-]+$/.test(username)) {
+		return res.status(400).json({ error: { message: 'Invalid username' } })
+	}
+
 	const validPanels = ['userstatistics', 'toplanguages', 'toprepositories']
 
 	if (!panels || panels.some((panel) => !validPanels.includes(panel))) {
