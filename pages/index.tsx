@@ -75,29 +75,38 @@ export default function Home() {
 					</div>
 				</section>
 
-				<footer className="p-4 flex items-center justify-center">
-					<span className="text-sm px-2 text-gray-500 sm:text-center dark:text-gray-400">
-						© 2023{' '}
-						<a href="https://flowbite.com/" className="hover:underline">
-							Reimagined Readme
-						</a>
-						. All Rights Reserved.
+				<footer className="flex-col items-center justify-center">
+					<div className="p-4 flex items-center justify-center">
+						<span className="text-sm px-2 text-gray-500 sm:text-center dark:text-gray-400">
+							© 2023{' '}
+							<a href="https://flowbite.com/" className="hover:underline">
+								Reimagined Readme
+							</a>
+							. All Rights Reserved.
+						</span>
+						<ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+							<li>
+								<a href="./privacy" className="mr-4 hover:underline md:mr-6">
+									Privacy Policy
+								</a>
+							</li>
+							<li>
+								<a
+									href="https://github.com/PressJump/reimaginedreadme"
+									className="hover:underline"
+								>
+									GitHub
+								</a>
+							</li>
+						</ul>
+					</div>
+
+					<span className="flex items-center justify-center text-xs text-gray-500">
+						<a href="https://www.freepik.com/free-photo/3d-wizard-hand-hold-magic-wand-with-golden-stars_32677829.htm#query=3d%20hand&position=37&from_view=author">
+							Hand Image by upklyak
+						</a>{' '}
+						on Freepik
 					</span>
-					<ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
-						<li>
-							<a href="./privacy" className="mr-4 hover:underline md:mr-6">
-								Privacy Policy
-							</a>
-						</li>
-						<li>
-							<a
-								href="https://github.com/PressJump/reimaginedreadme"
-								className="hover:underline"
-							>
-								GitHub
-							</a>
-						</li>
-					</ul>
 				</footer>
 			</body>
 		</>
