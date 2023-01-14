@@ -4,6 +4,7 @@ import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import widgetpreview from '../public/svgwidgetpreview.svg'
 import wizardhand from '../public/wizardhand.png'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 const inter = Inter({ subsets: ['latin'] })
 
