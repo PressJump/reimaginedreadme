@@ -9,7 +9,7 @@ GitHub readme widgets are too seperated and you need to add 4 different widgets 
 
 ### Example Widget:
 
-[![reimaginedreadme](https://myreadme.vercel.app/api/embed/PressJump)](https://github.com/PressJump/reimaginedreadme)
+[![reimaginedreadme](https://myreadme.vercel.app/api/embed/pressjump?panels=userstatistics,toprepositories,toplanguages)](https://github.com/PressJump/reimaginedreadme)
 
 ### Credits:
 
