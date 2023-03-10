@@ -42,20 +42,22 @@ export default function Privacy() {
 		const target = e.target.closest('.droppable')
 		const items = target.querySelectorAll('.draggable')
 		const mouseY = e.clientY
+		let targetIndex = -1
 
-		return [...items].reduce(
-			(closestIndex, child, index) => {
-				const box = child.getBoundingClientRect()
-				const offset = mouseY - box.top - box.height / 2
+		items.forEach((child, index) => {
+			const box = child.getBoundingClientRect()
+			const offset = mouseY - box.top - box.height / 2
 
-				if (offset < 0 && offset > closestIndex.offset) {
-					return { offset, index }
-				} else {
-					return closestIndex
-				}
-			},
-			{ offset: Number.NEGATIVE_INFINITY }
-		).index
+			if (offset < 0 && targetIndex === -1) {
+				targetIndex = index
+			}
+		})
+
+		if (targetIndex === -1) {
+			targetIndex = items.length
+		}
+
+		return targetIndex
 	}
 
 	return (
