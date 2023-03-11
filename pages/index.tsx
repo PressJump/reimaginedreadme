@@ -4,18 +4,128 @@ import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import widgetpreview from '../public/svgwidgetpreview.svg'
 import wizardhand from '../public/wizardhand.png'
+import { useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+	const [column1, setColumn1] = useState([
+		'/api/embed/pressjump?panels=userstatistics',
+		'/api/embed/pressjump?panels=toprepositories',
+		'/api/embed/pressjump?panels=toplanguages',
+	])
+	const [column2, setColumn2] = useState([])
+
+	const handleDragStart = (e, index, column) => {
+		e.dataTransfer.setData('index', index)
+		e.dataTransfer.setData('column', column)
+	}
+
+	//Kill the hr if the user drags out of the droppable area
+	const handleDragLeave = (e) => {
+		const target = e.target.closest('.droppable')
+		const hr = target.querySelector('.droppable-line')
+		if (hr) {
+			hr.remove()
+		}
+	}
+
+	const handleDragOver = (e) => {
+		e.preventDefault()
+
+		const target = e.target.closest('.droppable')
+		const items = target.querySelectorAll('.draggable')
+		const mouseY = e.clientY
+
+		const targetIndex = [...items].reduce(
+			(closestIndex, child, index) => {
+				const box = child.getBoundingClientRect()
+				const offset = mouseY - box.top - box.height / 2
+
+				if (offset < 0 && offset > closestIndex.offset) {
+					return { offset, index }
+				} else {
+					return closestIndex
+				}
+			},
+			{ offset: Number.NEGATIVE_INFINITY }
+		).index
+
+		//If there is a droppable-line, don't add another one
+		if (target.querySelector('.droppable-line')) {
+			return
+		}
+
+		const hr = document.createElement('hr')
+		hr.classList.add('droppable-line')
+
+		if (targetIndex === items.length) {
+			target.appendChild(hr)
+		} else {
+			target.insertBefore(hr, items[targetIndex])
+		}
+	}
+
+	const handleDrop = (e, targetColumn) => {
+		const index = parseInt(e.dataTransfer.getData('index'))
+		const sourceColumn = e.dataTransfer.getData('column')
+
+		if (sourceColumn !== targetColumn) {
+			const item = sourceColumn === 'column1' ? column1[index] : column2[index]
+
+			if (!isItemInColumn(item, targetColumn)) {
+				const sourceArray = sourceColumn === 'column1' ? column1 : column2
+				const targetArray = targetColumn === 'column1' ? column1 : column2
+
+				sourceArray.splice(index, 1)
+				targetArray.splice(getTargetIndex(e), 0, item)
+
+				setColumn1([...column1])
+				setColumn2([...column2])
+			}
+		}
+
+		const target = e.target.closest('.droppable')
+		const hr = target.querySelector('.droppable-line')
+		if (hr) {
+			hr.remove()
+		}
+	}
+
+	const isItemInColumn = (item, column) => {
+		const columnArray = column === 'column1' ? column1 : column2
+		return columnArray.includes(item)
+	}
+
+	const getTargetIndex = (e) => {
+		const target = e.target.closest('.droppable')
+		const items = target.querySelectorAll('.draggable')
+		const mouseY = e.clientY
+		let targetIndex = -1
+
+		items.forEach((child, index) => {
+			const box = child.getBoundingClientRect()
+			const offset = mouseY - box.top - box.height / 2
+
+			if (offset < 0 && targetIndex === -1) {
+				targetIndex = index
+			}
+		})
+
+		if (targetIndex === -1) {
+			targetIndex = items.length
+		}
+
+		return targetIndex
+	}
 	return (
 		<>
 			<body className="bg-white dark:bg-neutral-900">
-				<Image
+				{/* <Image
 					src={wizardhand}
 					alt="wizard hand"
 					className="w-4/12 fixed right-20 top-2/4"
-				/>
+				/> */}
 				<section className="bg-white dark:bg-neutral-900">
 					<div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-8 lg:px-12">
 						<a
@@ -70,6 +180,56 @@ export default function Home() {
 									draggable="false"
 								/>
 							</div>
+						</div>
+					</div>
+				</section>
+
+				<section className="bg-white dark:bg-neutral-900">
+					{/* Title */}
+					<div className="text-center">
+						<h1 className="text-3xl font-extrabold">
+							Choose from a variety of blocks
+						</h1>
+						<p className="mb-8 text-lg font-normal text-neutral-500 lg:text-lg sm:px-16 xl:px-48 dark:text-neutral-400">
+							We have a variety of blocks to choose from to make your readme
+							stand out.
+						</p>
+					</div>
+
+					<div className="flex flex-col items-center gap-2 w-50">
+						<div
+							className=" bg-neutral-100 rounded-xl w-4/12 h-40 p-2 flex gap-3 droppable"
+							onDragOver={(e) => handleDragOver(e)}
+							onDragLeave={(e) => handleDragLeave(e)}
+							onDrop={(e) => handleDrop(e, 'column1')}
+						>
+							{column1.map((item, index) => (
+								<div
+									className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+									key={index}
+									draggable
+									onDragStart={(e) => handleDragStart(e, index, 'column1')}
+								>
+									<img src={item} className="h-36" />
+								</div>
+							))}
+						</div>
+						<div
+							className=" bg-neutral-100 rounded-xl w-8/12 h-60 p-2 flex gap-4 droppable"
+							onDragOver={(e) => handleDragOver(e)}
+							onDragLeave={(e) => handleDragLeave(e)}
+							onDrop={(e) => handleDrop(e, 'column2')}
+						>
+							{column2.map((item, index) => (
+								<div
+									className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+									key={index}
+									draggable
+									onDragStart={(e) => handleDragStart(e, index, 'column2')}
+								>
+									<img src={item} />
+								</div>
+							))}
 						</div>
 					</div>
 				</section>
