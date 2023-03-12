@@ -71,7 +71,7 @@ export default async function handler(
 			contributionsCollection(from: "${date.toISOString()}", to: "${new Date().toISOString()}") {
 
 			${
-				panels.includes('userstatistics')
+				panels.includes('userstatistics') || panels.includes('commitgraph')
 					? `totalIssueContributions
 					totalPullRequestContributions
 					contributionCalendar {
