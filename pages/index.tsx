@@ -313,6 +313,15 @@ export default function Home() {
 										))}
 									</div>
 								</div>
+
+								<div className="bg-neutral-50 rounded-xl p-2 w-full text-right">
+									<button
+										type="button"
+										className="focus:outline-none text-white font-extrabold bg-purple-500 hover:bg-purple-600 focus:ring-4 focus:ring-purple-300 rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+									>
+										Generate README
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
