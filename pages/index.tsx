@@ -197,45 +197,6 @@ export default function Home() {
 						</p>
 					</div>
 
-					{/* <div className="flex items-center justify-center">
-						<div className="flex-col items-center gap-2 bg-gray-500 max-w-lg">
-							<div
-								className=" bg-neutral-100 rounded-xl w-4/12 h-40 p-2 flex gap-3 droppable"
-								onDragOver={(e) => handleDragOver(e)}
-								onDragLeave={(e) => handleDragLeave(e)}
-								onDrop={(e) => handleDrop(e, 'column1')}
-							>
-								{column1.map((item, index) => (
-									<div
-										className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
-										key={index}
-										draggable
-										onDragStart={(e) => handleDragStart(e, index, 'column1')}
-									>
-										<img src={item} className="h-36" />
-									</div>
-								))}
-							</div>
-							<div
-								className=" bg-neutral-100 rounded-xl w-8/12 sm:w-9/12 md:w-8/12 lg:w-7/12 h-60 p-2 flex gap-4 droppable"
-								onDragOver={(e) => handleDragOver(e)}
-								onDragLeave={(e) => handleDragLeave(e)}
-								onDrop={(e) => handleDrop(e, 'column2')}
-							>
-								{column2.map((item, index) => (
-									<div
-										className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
-										key={index}
-										draggable
-										onDragStart={(e) => handleDragStart(e, index, 'column2')}
-									>
-										<img src={item} />
-									</div>
-								))}
-							</div>
-						</div>
-					</div> */}
-
 					<div className="flex items-center justify-center">
 						<div className="max-w-4xl w-screen rounded-lg border">
 							<div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
