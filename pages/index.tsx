@@ -10,10 +10,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
 	const [column1, setColumn1] = useState([
-		'/api/embed/pressjump?panels=userstatistics',
-		'/api/embed/pressjump?panels=toprepositories',
-		'/api/embed/pressjump?panels=toplanguages',
-		'/api/embed/pressjump?panels=commitgraph',
+		'userstatistics',
+		'toprepositories',
+		'toplanguages',
+		'commitgraph',
 	])
 	const [column2, setColumn2] = useState([])
 
@@ -260,7 +260,7 @@ export default function Home() {
 							<div className="flex flex-col gap-2 p-2">
 								<div className="bg-neutral-50 rounded-xl h-52 p-2 w-full">
 									<div className="w-full bg-neutral-100 h-min p-2 rounded-lg">
-										Our Blocks
+										🏗️ Our Blocks
 									</div>
 									<div
 										className="py-3 droppable flex gap-2 h-40"
@@ -277,7 +277,10 @@ export default function Home() {
 													handleDragStart(e, index, 'column1')
 												}
 											>
-												<img src={item} className="h-36" />
+												<img
+													src={'/api/embed/pressjump?panels=' + item}
+													className="h-36"
+												/>
 											</div>
 										))}
 									</div>
@@ -302,7 +305,10 @@ export default function Home() {
 													handleDragStart(e, index, 'column2')
 												}
 											>
-												<img src={item} className="h-58" />
+												<img
+													src={'/api/embed/pressjump?panels=' + item}
+													className="h-58"
+												/>
 											</div>
 										))}
 									</div>
