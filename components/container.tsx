@@ -4,9 +4,11 @@ import {
 	Usertoplangspanel,
 	Usertoprepositoriespanel,
 	Usercommitgraph,
+	Userwelcome,
 } from '.'
 
 type UserData = {
+	username?: string
 	thisyear?: number
 	thismonth?: number
 	thisweek?: number
@@ -100,6 +102,14 @@ export const container = (
             font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
         }
 
+		.bigtitle {
+			font-size: 25px;
+            font-weight: 400;
+            fill: #${panelProps.titlecolor ? panelProps.titlecolor : '000'};
+            animation: fadeIn 0.8s ease-in-out forwards;
+			font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
+		}
+
         .link {
             font: bold;
             fill: rgb(0, 102, 255);
@@ -159,7 +169,7 @@ export const container = (
 						componentx={Number(width.toString()) + 7}
 					/>
 				)
-				panelWidth = 170
+				panelWidth = 180
 				break
 			case 'toprepositories':
 				panelComponent = (
@@ -179,6 +189,18 @@ export const container = (
 				)
 				panelWidth = 180
 				break
+
+			case 'userwelcome':
+				console.log(userData)
+				panelComponent = (
+					<Userwelcome
+						username={userData.username || 'Username'}
+						componentx={Number(width.toString()) + 7}
+					/>
+				)
+				panelWidth = 850
+				break
+
 			default:
 				return // handle unknown panels here
 		}

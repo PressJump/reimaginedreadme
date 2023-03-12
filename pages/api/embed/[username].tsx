@@ -5,6 +5,7 @@ import { container } from '../../../components'
 const { graphql } = require('@octokit/graphql')
 
 type UserData = {
+	username?: string
 	thisyear?: number
 	thismonth?: number
 	thisweek?: number
@@ -55,6 +56,7 @@ export default async function handler(
 		'toplanguages',
 		'toprepositories',
 		'commitgraph',
+		'userwelcome',
 	]
 
 	if (!panels || panels.some((panel) => !validPanels.includes(panel))) {

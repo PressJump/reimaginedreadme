@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 type UserData = {
+	username?: string
 	thisyear?: number
 	thismonth?: number
 	thisweek?: number
@@ -9,6 +10,8 @@ type UserData = {
 	ranking?: string
 	progress?: number
 	toplang?: [string, unknown][]
+	toprepos?: [string, unknown][]
+	commitgraph?: number[]
 }
 
 export const Userstatspanel = ({
