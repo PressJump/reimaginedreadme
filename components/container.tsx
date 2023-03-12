@@ -1,5 +1,10 @@
 import { stdout } from 'process'
-import { Userstatspanel, Usertoplangspanel, Usertoprepositoriespanel } from '.'
+import {
+	Userstatspanel,
+	Usertoplangspanel,
+	Usertoprepositoriespanel,
+	Usercommitgraph,
+} from '.'
 
 type UserData = {
 	thisyear?: number
@@ -11,6 +16,7 @@ type UserData = {
 	progress?: number
 	toplang?: [string, unknown][]
 	toprepos?: [string, unknown][]
+	commitgraph?: number[]
 }
 
 type PanelProps = {
@@ -99,6 +105,10 @@ export const container = (
             fill: rgb(0, 102, 255);
         }
 
+		.graph {
+			stroke: #${panelProps.color ? panelProps.color : 'eacb2f'};
+		}
+
         @keyframes scaleIn {
             from {
                 transform: translate(-5px, 5px) scale(0);
@@ -156,6 +166,17 @@ export const container = (
 			const panelComponent = (
 				<Usertoprepositoriespanel
 					topRepositories={userData.toprepos!}
+					componentx={Number(width.toString()) + 7}
+				/>
+			)
+			width += 180
+			panelComponents.push(panelComponent)
+		}
+
+		if (panel === 'commitgraph') {
+			const panelComponent = (
+				<Usercommitgraph
+					monthcontributions={userData.commitgraph!}
 					componentx={Number(width.toString()) + 7}
 				/>
 			)

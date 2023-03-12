@@ -14,6 +14,7 @@ type UserData = {
 	progress?: number
 	toplang?: [string, unknown][]
 	toprepos?: [string, unknown][]
+	commitgraph?: number[]
 }
 
 type Data = {
@@ -49,7 +50,12 @@ export default async function handler(
 		return res.status(400).json({ error: { message: 'Invalid username' } })
 	}
 
-	const validPanels = ['userstatistics', 'toplanguages', 'toprepositories']
+	const validPanels = [
+		'userstatistics',
+		'toplanguages',
+		'toprepositories',
+		'commitgraph',
+	]
 
 	if (!panels || panels.some((panel) => !validPanels.includes(panel))) {
 		return res
@@ -198,6 +204,17 @@ export default async function handler(
 			.sort((a, b) => b.stars - a.stars)
 			.slice(0, 4)
 		userData.toprepos = topRepos
+	}
+
+	if (panels!.includes('commitgraph')) {
+		//Get count of contributions each month for the last 13 months
+		const resproot = resp.user.contributionsCollection
+		const weeks = resproot.contributionCalendar.weeks
+		const contributions = weeks.map((week: any) => {
+			const days = week.contributionDays
+			return days.reduce((a: any, b: any) => a + b.contributionCount, 0)
+		})
+		userData.commitgraph = contributions
 	}
 
 	const svg = ReactDomServer.renderToString(
