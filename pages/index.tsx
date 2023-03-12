@@ -215,7 +215,7 @@ export default function Home() {
 							))}
 						</div>
 						<div
-							className=" bg-neutral-100 rounded-xl w-8/12 h-60 p-2 flex gap-4 droppable"
+							className=" bg-neutral-100 rounded-xl w-8/12 sm:w-9/12 md:w-8/12 lg:w-7/12 h-60 p-2 flex gap-4 droppable"
 							onDragOver={(e) => handleDragOver(e)}
 							onDragLeave={(e) => handleDragLeave(e)}
 							onDrop={(e) => handleDrop(e, 'column2')}
