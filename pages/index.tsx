@@ -284,6 +284,13 @@ export default function Home() {
 										type="button"
 										className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 flex gap-2 justify-center items-center"
 									>
+										<span className="w-4 h-4 ml-2 text-xs bg-purple-500 rounded-full border border-neutral-400"></span>
+										Primary Color
+									</button>
+									<button
+										type="button"
+										className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 flex gap-2 justify-center items-center"
+									>
 										<span className="w-4 h-4 ml-2 text-xs bg-neutral-200 rounded-full border border-neutral-400"></span>
 										Background Color
 									</button>
