@@ -13,6 +13,7 @@ export default function Home() {
 		'/api/embed/pressjump?panels=userstatistics',
 		'/api/embed/pressjump?panels=toprepositories',
 		'/api/embed/pressjump?panels=toplanguages',
+		'/api/embed/pressjump?panels=commitgraph',
 	])
 	const [column2, setColumn2] = useState([])
 
@@ -196,40 +197,134 @@ export default function Home() {
 						</p>
 					</div>
 
-					<div className="flex flex-col items-center gap-2 w-50">
-						<div
-							className=" bg-neutral-100 rounded-xl w-4/12 h-40 p-2 flex gap-3 droppable"
-							onDragOver={(e) => handleDragOver(e)}
-							onDragLeave={(e) => handleDragLeave(e)}
-							onDrop={(e) => handleDrop(e, 'column1')}
-						>
-							{column1.map((item, index) => (
-								<div
-									className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
-									key={index}
-									draggable
-									onDragStart={(e) => handleDragStart(e, index, 'column1')}
-								>
-									<img src={item} className="h-36" />
-								</div>
-							))}
+					{/* <div className="flex items-center justify-center">
+						<div className="flex-col items-center gap-2 bg-gray-500 max-w-lg">
+							<div
+								className=" bg-neutral-100 rounded-xl w-4/12 h-40 p-2 flex gap-3 droppable"
+								onDragOver={(e) => handleDragOver(e)}
+								onDragLeave={(e) => handleDragLeave(e)}
+								onDrop={(e) => handleDrop(e, 'column1')}
+							>
+								{column1.map((item, index) => (
+									<div
+										className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+										key={index}
+										draggable
+										onDragStart={(e) => handleDragStart(e, index, 'column1')}
+									>
+										<img src={item} className="h-36" />
+									</div>
+								))}
+							</div>
+							<div
+								className=" bg-neutral-100 rounded-xl w-8/12 sm:w-9/12 md:w-8/12 lg:w-7/12 h-60 p-2 flex gap-4 droppable"
+								onDragOver={(e) => handleDragOver(e)}
+								onDragLeave={(e) => handleDragLeave(e)}
+								onDrop={(e) => handleDrop(e, 'column2')}
+							>
+								{column2.map((item, index) => (
+									<div
+										className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+										key={index}
+										draggable
+										onDragStart={(e) => handleDragStart(e, index, 'column2')}
+									>
+										<img src={item} />
+									</div>
+								))}
+							</div>
 						</div>
-						<div
-							className=" bg-neutral-100 rounded-xl w-8/12 sm:w-9/12 md:w-8/12 lg:w-7/12 h-60 p-2 flex gap-4 droppable"
-							onDragOver={(e) => handleDragOver(e)}
-							onDragLeave={(e) => handleDragLeave(e)}
-							onDrop={(e) => handleDrop(e, 'column2')}
-						>
-							{column2.map((item, index) => (
-								<div
-									className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
-									key={index}
-									draggable
-									onDragStart={(e) => handleDragStart(e, index, 'column2')}
-								>
-									<img src={item} />
+					</div> */}
+
+					<div className="flex items-center justify-center">
+						<div className="max-w-5xl w-screen rounded-lg border">
+							<div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
+								<div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
+									<div className="flex items-center space-x-1 sm:pr-4">
+										<button
+											type="button"
+											className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 flex gap-2 justify-center items-center"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="25"
+												height="25"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											>
+												<rect
+													x="3"
+													y="3"
+													width="18"
+													height="18"
+													rx="2"
+													ry="2"
+												></rect>
+												<line x1="12" y1="8" x2="12" y2="16"></line>
+												<line x1="8" y1="12" x2="16" y2="12"></line>
+											</svg>
+											Create custom list component
+										</button>
+									</div>
+									<div className="flex flex-wrap items-center space-x-1 sm:pl-4"></div>
 								</div>
-							))}
+								<div className="flex">
+									<button
+										type="button"
+										className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 flex gap-2 justify-center items-center"
+									>
+										<span className="w-4 h-4 ml-2 text-xs bg-neutral-800 rounded-full border border-neutral-400"></span>
+										Text Color
+									</button>
+									<button
+										type="button"
+										className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 flex gap-2 justify-center items-center"
+									>
+										<span className="w-4 h-4 ml-2 text-xs bg-neutral-200 rounded-full border border-neutral-400"></span>
+										Background Color
+									</button>
+								</div>
+							</div>
+							<div className="flex flex-col gap-2 p-2">
+								<div
+									className=" bg-neutral-50 rounded-xl h-40 p-2 flex gap-3 droppable w-full"
+									onDragOver={(e) => handleDragOver(e)}
+									onDragLeave={(e) => handleDragLeave(e)}
+									onDrop={(e) => handleDrop(e, 'column1')}
+								>
+									{column1.map((item, index) => (
+										<div
+											className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+											key={index}
+											draggable
+											onDragStart={(e) => handleDragStart(e, index, 'column1')}
+										>
+											<img src={item} className="h-36" />
+										</div>
+									))}
+								</div>
+								<div
+									className=" bg-neutral-50 rounded-xl  h-60 p-2 flex gap-4 droppable w-full"
+									onDragOver={(e) => handleDragOver(e)}
+									onDragLeave={(e) => handleDragLeave(e)}
+									onDrop={(e) => handleDrop(e, 'column2')}
+								>
+									{column2.map((item, index) => (
+										<div
+											className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+											key={index}
+											draggable
+											onDragStart={(e) => handleDragStart(e, index, 'column2')}
+										>
+											<img src={item} />
+										</div>
+									))}
+								</div>
+							</div>
 						</div>
 					</div>
 				</section>
