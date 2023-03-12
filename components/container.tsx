@@ -136,55 +136,57 @@ export const container = (
             }
         }`
 
+	// ================================================================================
 	let width = 0
+	const panelComponents: JSX.Element[] = []
 
-	let panelComponents: JSX.Element[] = []
 	panels.forEach((panel) => {
-		if (panel === 'userstatistics') {
-			const panelComponent = (
-				<Userstatspanel
-					userData={userData}
-					componentx={Number(width.toString())}
-				/>
-			)
-			width += 310
-			panelComponents.push(panelComponent)
+		let panelComponent, panelWidth
+		switch (panel) {
+			case 'userstatistics':
+				panelComponent = (
+					<Userstatspanel
+						userData={userData}
+						componentx={Number(width.toString())}
+					/>
+				)
+				panelWidth = 310
+				break
+			case 'toplanguages':
+				panelComponent = (
+					<Usertoplangspanel
+						topLanguages={userData.toplang!}
+						componentx={Number(width.toString()) + 7}
+					/>
+				)
+				panelWidth = 170
+				break
+			case 'toprepositories':
+				panelComponent = (
+					<Usertoprepositoriespanel
+						topRepositories={userData.toprepos!}
+						componentx={Number(width.toString()) + 7}
+					/>
+				)
+				panelWidth = 180
+				break
+			case 'commitgraph':
+				panelComponent = (
+					<Usercommitgraph
+						monthcontributions={userData.commitgraph!}
+						componentx={Number(width.toString()) + 7}
+					/>
+				)
+				panelWidth = 180
+				break
+			default:
+				return // handle unknown panels here
 		}
 
-		if (panel === 'toplanguages') {
-			const panelComponent = (
-				<Usertoplangspanel
-					topLanguages={userData.toplang!}
-					componentx={Number(width.toString()) + 7}
-				/>
-			)
-			width += 170
-			panelComponents.push(panelComponent)
-		}
+		panelComponents.push(panelComponent)
+		width += panelWidth
 
-		if (panel === 'toprepositories') {
-			const panelComponent = (
-				<Usertoprepositoriespanel
-					topRepositories={userData.toprepos!}
-					componentx={Number(width.toString()) + 7}
-				/>
-			)
-			width += 180
-			panelComponents.push(panelComponent)
-		}
-
-		if (panel === 'commitgraph') {
-			const panelComponent = (
-				<Usercommitgraph
-					monthcontributions={userData.commitgraph!}
-					componentx={Number(width.toString()) + 7}
-				/>
-			)
-			width += 180
-			panelComponents.push(panelComponent)
-		}
-
-		//Insert a divider between panels
+		// Insert a divider between panels
 		panelComponents.push(
 			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
 				<g className="item" transform="translate(0, 0)">
