@@ -237,7 +237,7 @@ export default function Home() {
 					</div> */}
 
 					<div className="flex items-center justify-center">
-						<div className="max-w-5xl w-screen rounded-lg border">
+						<div className="max-w-4xl w-screen rounded-lg border">
 							<div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
 								<div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
 									<div className="flex items-center space-x-1 sm:pr-4">
@@ -290,39 +290,54 @@ export default function Home() {
 								</div>
 							</div>
 							<div className="flex flex-col gap-2 p-2">
-								<div
-									className=" bg-neutral-50 rounded-xl h-40 p-2 flex gap-3 droppable w-full"
-									onDragOver={(e) => handleDragOver(e)}
-									onDragLeave={(e) => handleDragLeave(e)}
-									onDrop={(e) => handleDrop(e, 'column1')}
-								>
-									{column1.map((item, index) => (
-										<div
-											className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
-											key={index}
-											draggable
-											onDragStart={(e) => handleDragStart(e, index, 'column1')}
-										>
-											<img src={item} className="h-36" />
-										</div>
-									))}
+								<div className="bg-neutral-50 rounded-xl h-52 p-2 w-full">
+									<div className="w-full bg-neutral-100 h-min p-2 rounded-lg">
+										Our Blocks
+									</div>
+									<div
+										className="py-3 droppable flex gap-2 h-40"
+										onDragOver={(e) => handleDragOver(e)}
+										onDragLeave={(e) => handleDragLeave(e)}
+										onDrop={(e) => handleDrop(e, 'column1')}
+									>
+										{column1.map((item, index) => (
+											<div
+												className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+												key={index}
+												draggable
+												onDragStart={(e) =>
+													handleDragStart(e, index, 'column1')
+												}
+											>
+												<img src={item} className="h-36" />
+											</div>
+										))}
+									</div>
 								</div>
-								<div
-									className=" bg-neutral-50 rounded-xl  h-60 p-2 flex gap-4 droppable w-full"
-									onDragOver={(e) => handleDragOver(e)}
-									onDragLeave={(e) => handleDragLeave(e)}
-									onDrop={(e) => handleDrop(e, 'column2')}
-								>
-									{column2.map((item, index) => (
-										<div
-											className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
-											key={index}
-											draggable
-											onDragStart={(e) => handleDragStart(e, index, 'column2')}
-										>
-											<img src={item} />
-										</div>
-									))}
+
+								<div className="bg-neutral-50 rounded-xl p-2 w-full">
+									<div className="w-full bg-neutral-100 h-min p-2 rounded-lg">
+										Your README (Drag blocks here)
+									</div>
+									<div
+										className="py-3 droppable flex gap-2 h-60"
+										onDragOver={(e) => handleDragOver(e)}
+										onDragLeave={(e) => handleDragLeave(e)}
+										onDrop={(e) => handleDrop(e, 'column2')}
+									>
+										{column2.map((item, index) => (
+											<div
+												className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+												key={index}
+												draggable
+												onDragStart={(e) =>
+													handleDragStart(e, index, 'column2')
+												}
+											>
+												<img src={item} className="h-58" />
+											</div>
+										))}
+									</div>
 								</div>
 							</div>
 						</div>
