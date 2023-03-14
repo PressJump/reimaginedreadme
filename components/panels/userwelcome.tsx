@@ -4,15 +4,15 @@ import { devsvg } from '../../utils/devsvg'
 
 export const Userwelcome = ({
 	username,
-	componentx,
+	componentpos,
 }: {
 	username: string
-	componentx: number
+	componentpos: { x: number; y: number }
 }) => {
 	return (
 		<>
 			{/* transform */}
-			<g transform={`translate(${componentx}, 0)`}>
+			<g transform={`translate(${componentpos.x}, ${componentpos.y})`}>
 				<text
 					xmlns="http://www.w3.org/2000/svg"
 					className="bigtitle"

@@ -28,6 +28,11 @@ type PanelProps = {
 	bgcolor?: string
 }
 
+type componentpos = {
+	x: number
+	y: number
+}
+
 export const container = (
 	userData: UserData,
 	panelProps: PanelProps,
@@ -148,74 +153,86 @@ export const container = (
 
 	// ================================================================================
 	let width = 0
+	let height = 229
+	let x = 0
+	let y = 0
 	const panelComponents: JSX.Element[] = []
 
 	panels.forEach((panel) => {
-		let panelComponent, panelWidth
+		let panelComponent
+
+		//if its less than 850 we just need to set the width
+		if (x >= 890) {
+			x = 0
+			y += 229
+			height += 229
+			width = 890
+		}
+
+		x += 10
+
 		switch (panel) {
 			case 'userstatistics':
 				panelComponent = (
 					<Userstatspanel
 						userData={userData}
-						componentx={Number(width.toString())}
+						componentpos={{ x: Number(x.toString()), y: y }}
 					/>
 				)
-				panelWidth = 310
+				x += 310
 				break
 			case 'toplanguages':
 				panelComponent = (
 					<Usertoplangspanel
 						topLanguages={userData.toplang!}
-						componentx={Number(width.toString()) + 7}
+						componentpos={{ x: Number(x.toString()), y: y }}
 					/>
 				)
-				panelWidth = 180
+				x += 180
 				break
 			case 'toprepositories':
 				panelComponent = (
 					<Usertoprepositoriespanel
 						topRepositories={userData.toprepos!}
-						componentx={Number(width.toString()) + 7}
+						componentpos={{ x: Number(x.toString()), y: y }}
 					/>
 				)
-				panelWidth = 180
+				x += 180
 				break
 			case 'commitgraph':
 				panelComponent = (
 					<Usercommitgraph
 						monthcontributions={userData.commitgraph!}
-						componentx={Number(width.toString()) + 7}
+						componentpos={{ x: Number(x.toString()), y: y }}
 					/>
 				)
-				panelWidth = 180
+				x += 180
 				break
-
 			case 'userwelcome':
-				console.log(userData)
 				panelComponent = (
 					<Userwelcome
 						username={userData.username || 'Username'}
-						componentx={Number(width.toString()) + 7}
+						componentpos={{ x: Number(x.toString()), y: y }}
 					/>
 				)
-				panelWidth = 850
+				x += 890
 				break
-
 			default:
 				return // handle unknown panels here
 		}
 
+		if (x > width) width = x
+
 		panelComponents.push(panelComponent)
-		width += panelWidth
 
 		// Insert a divider between panels
 		panelComponents.push(
 			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
-				<g className="item" transform="translate(0, 0)">
+				<g className="item" transform={`translate(${x}, ${y})`}>
 					<line
-						x1={width + 1}
+						x1={0}
 						y1="40"
-						x2={width + 1}
+						x2={0}
 						y2="200"
 						style={{ stroke: '#d9d9d9', strokeWidth: 1 }}
 					/>
@@ -226,7 +243,7 @@ export const container = (
 
 	return (
 		<>
-			<svg xmlns="http://www.w3.org/2000/svg" width={width} height="230">
+			<svg xmlns="http://www.w3.org/2000/svg" width={width} height={height}>
 				<style>${style}</style>
 				<rect
 					xmlns="http://www.w3.org/2000/svg"
@@ -234,7 +251,7 @@ export const container = (
 					y="0.5"
 					rx="12"
 					width={width - 1}
-					height="229"
+					height={height - 1}
 					fill={panelProps.bgcolor ? `#${panelProps.bgcolor}` : '#efefef'}
 					stroke="#e1e4e8"
 				/>
