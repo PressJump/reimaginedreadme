@@ -40,7 +40,7 @@ export const container = (
 ) => {
 	//SVG of GitHub Stats taken from https://github.com/LordDashMe/github-contribution-stats under MIT License
 	//I really love the look of the embed and wanted to use it as a base line
-	console.log(userData)
+
 	// ================================================================================
 	const style = `
         .title {
@@ -209,7 +209,6 @@ export const container = (
 				x += 180
 				break
 			case 'userwelcome':
-				console.log(userData.username)
 				panelComponent = (
 					<Userwelcome
 						username={userData.username || 'Username'}
