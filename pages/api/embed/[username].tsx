@@ -43,7 +43,7 @@ export default async function handler(
 	const textcolor = req.query.textcolor?.toString()
 	const bgcolor = req.query.bgcolor?.toString()
 	const panels = req.query.panels?.toString().split(',')
-	let userData: UserData = {}
+	let userData = {} as UserData
 	const panelProps: PanelProps = { color, titlecolor, textcolor, bgcolor }
 
 	//username will exist but we should validate username
@@ -140,6 +140,8 @@ export default async function handler(
 		if (commits > 50) return 'D'
 	}
 
+	//Set userData username
+
 	if (panels!.includes('userstatistics')) {
 		const resproot = resp.user.contributionsCollection
 		userData = {
@@ -218,6 +220,8 @@ export default async function handler(
 		})
 		userData.commitgraph = contributions
 	}
+
+	userData.username = username
 
 	const svg = ReactDomServer.renderToString(
 		container(userData, panelProps, panels!)
