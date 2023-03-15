@@ -226,20 +226,22 @@ export const container = (
 
 		panelComponents.push(panelComponent)
 
-		// Insert a divider between panels
-		panelComponents.push(
-			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
-				<g className="item" transform={`translate(${x}, ${y})`}>
-					<line
-						x1={0}
-						y1="40"
-						x2={0}
-						y2="200"
-						style={{ stroke: '#d9d9d9', strokeWidth: 1 }}
-					/>
-				</g>
-			</svg>
-		)
+		if (x < 890) {
+			// Insert a divider between panels
+			panelComponents.push(
+				<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
+					<g className="item" transform={`translate(${x}, ${y})`}>
+						<line
+							x1={0}
+							y1="40"
+							x2={0}
+							y2="200"
+							style={{ stroke: '#d9d9d9', strokeWidth: 1 }}
+						/>
+					</g>
+				</svg>
+			)
+		}
 	})
 
 	return (
