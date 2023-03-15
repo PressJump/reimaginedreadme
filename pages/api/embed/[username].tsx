@@ -57,12 +57,41 @@ export default async function handler(
 		'toprepositories',
 		'commitgraph',
 		'userwelcome',
+		'customlist',
 	]
 
 	if (!panels || panels.some((panel) => !validPanels.includes(panel))) {
 		return res
 			.status(400)
 			.json({ error: { message: 'The "panels" query parameter is required' } })
+	}
+
+	//get how many custom lists there are
+	let customListCount = 0
+	panels.forEach((panel) => {
+		if (panel.includes('customlist')) {
+			customListCount++
+		}
+	})
+
+	//if there are custom lists, get url params for them in interval like customlist1=, customlist2=, customlist3=
+	if (customListCount > 0) {
+		//get custom list url params
+		for (let i = 1; i <= customListCount; i++) {
+			const customList = req.query[`customlist${i}`]?.toString()
+			if (!customList) {
+				return res
+					.status(400)
+					.json({ error: { message: 'Invalid custom list' } })
+			}
+
+			//if there is
+		}
+	}
+
+	//custom list
+	if (panels.includes('customlist')) {
+		//After panels url param, get params customlist1, customlist2, customlist3 or how many more there are
 	}
 
 	const date = new Date()
