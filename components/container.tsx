@@ -33,10 +33,15 @@ type componentpos = {
 	y: number
 }
 
+type customlist = {
+	items: string[]
+}
+
 export const container = (
 	userData: UserData,
 	panelProps: PanelProps,
-	panels: string[]
+	panels: string[],
+	customLists: customlist[]
 ) => {
 	//SVG of GitHub Stats taken from https://github.com/LordDashMe/github-contribution-stats under MIT License
 	//I really love the look of the embed and wanted to use it as a base line

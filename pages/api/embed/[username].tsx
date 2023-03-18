@@ -18,6 +18,10 @@ type UserData = {
 	commitgraph?: number[]
 }
 
+type customlist = {
+	items: string[]
+}
+
 type Data = {
 	error?: {
 		message: string
@@ -74,6 +78,8 @@ export default async function handler(
 		}
 	})
 
+	let customLists: customlist[] = []
+
 	//if there are custom lists, get url params for them in interval like customlist1=, customlist2=, customlist3=
 	if (customListCount > 0) {
 		//get custom list url params
@@ -85,7 +91,9 @@ export default async function handler(
 					.json({ error: { message: 'Invalid custom list' } })
 			}
 
-			//if there is
+			customLists.push({
+				items: customList.split(','),
+			})
 		}
 	}
 
@@ -144,19 +152,29 @@ export default async function handler(
 		}
 		}`
 
-	const resp = await graphql(query, {
-		headers: {
-			authorization: `token ${process.env.GITHUB_TOKEN}`,
-		},
-	})
-		.then((res: any) => res)
-		.catch((err: any) => {
-			res.status(404).json({
-				error: {
-					message: err.message,
-				},
-			})
+	//if panels includes toplanguages or toprepositories or userstatistics or commitgraph, get data from github api
+
+	let resp = null
+	if (
+		panels.includes('toplanguages') ||
+		panels.includes('toprepositories') ||
+		panels.includes('userstatistics') ||
+		panels.includes('commitgraph')
+	) {
+		resp = await graphql(query, {
+			headers: {
+				authorization: `token ${process.env.GITHUB_TOKEN}`,
+			},
 		})
+			.then((res: any) => res)
+			.catch((err: any) => {
+				res.status(404).json({
+					error: {
+						message: err.message,
+					},
+				})
+			})
+	}
 
 	const ranking = (thisyear: number) => {
 		const commits = thisyear || 0
@@ -250,10 +268,11 @@ export default async function handler(
 		userData.commitgraph = contributions
 	}
 
+	//This is just free data for now
 	userData.username = username
 
 	const svg = ReactDomServer.renderToString(
-		container(userData, panelProps, panels!)
+		container(userData, panelProps, panels!, customLists)
 	)
 	res.setHeader('Content-Type', 'image/svg+xml')
 	// @ts-ignore

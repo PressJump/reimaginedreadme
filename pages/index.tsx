@@ -8,13 +8,29 @@ import { useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
+type panels = {
+	name: string
+	colspan: number
+}
+
 export default function Home() {
+	// const [column1, setColumn1] = useState([
+	// 	'userstatistics',
+	// 	'toprepositories',
+	// 	'toplanguages',
+	// 	'commitgraph',
+	// 	'userwelcome',
+	// ])
+
+	//panels type
 	const [column1, setColumn1] = useState([
-		'userstatistics',
-		'toprepositories',
-		'toplanguages',
-		'commitgraph',
+		{ name: 'userstatistics', colspan: 2 },
+		{ name: 'toprepositories', colspan: 1 },
+		{ name: 'toplanguages', colspan: 1 },
+		{ name: 'commitgraph', colspan: 1 },
+		{ name: 'userwelcome', colspan: 4 },
 	])
+
 	const [column2, setColumn2] = useState([])
 
 	const handleDragStart = (e, index, column) => {
@@ -258,19 +274,19 @@ export default function Home() {
 								</div>
 							</div>
 							<div className="flex flex-col gap-2 p-2">
-								<div className="bg-neutral-50 rounded-xl h-52 p-2 w-full">
+								<div className="bg-neutral-50 rounded-xl p-2 w-full">
 									<div className="w-full bg-neutral-100 h-min p-2 rounded-lg">
 										🏗️ Our Blocks
 									</div>
 									<div
-										className="py-3 droppable flex gap-2 h-40"
+										className="py-3 droppable grid grid-cols-5 gap-2 "
 										onDragOver={(e) => handleDragOver(e)}
 										onDragLeave={(e) => handleDragLeave(e)}
 										onDrop={(e) => handleDrop(e, 'column1')}
 									>
 										{column1.map((item, index) => (
 											<div
-												className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+												className={`rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable col-span-${item.colspan}`}
 												key={index}
 												draggable
 												onDragStart={(e) =>
@@ -278,8 +294,8 @@ export default function Home() {
 												}
 											>
 												<img
-													src={'/api/embed/pressjump?panels=' + item}
-													className="h-36"
+													src={'/api/embed/pressjump?panels=' + item.name}
+													className="h-36 w-auto"
 												/>
 											</div>
 										))}
