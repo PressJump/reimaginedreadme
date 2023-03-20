@@ -14,127 +14,119 @@ type panels = {
 }
 
 export default function Home() {
+	//panels type
 	// const [column1, setColumn1] = useState([
-	// 	'userstatistics',
-	// 	'toprepositories',
-	// 	'toplanguages',
-	// 	'commitgraph',
-	// 	'userwelcome',
+	// 	{ name: 'userstatistics', colspan: 2 },
+	// 	{ name: 'toprepositories', colspan: 1 },
+	// 	{ name: 'toplanguages', colspan: 1 },
+	// 	{ name: 'commitgraph', colspan: 1 },
+	// 	{ name: 'userwelcome', colspan: 5 },
 	// ])
 
-	//panels type
-	const [column1, setColumn1] = useState([
-		{ name: 'userstatistics', colspan: 2 },
-		{ name: 'toprepositories', colspan: 1 },
-		{ name: 'toplanguages', colspan: 1 },
-		{ name: 'commitgraph', colspan: 1 },
-		{ name: 'userwelcome', colspan: 5 },
-	])
+	// const [column2, setColumn2] = useState([])
 
-	const [column2, setColumn2] = useState([])
+	// const handleDragStart = (e, index, column) => {
+	// 	e.dataTransfer.setData('index', index)
+	// 	e.dataTransfer.setData('column', column)
+	// }
 
-	const handleDragStart = (e, index, column) => {
-		e.dataTransfer.setData('index', index)
-		e.dataTransfer.setData('column', column)
-	}
+	// //Kill the hr if the user drags out of the droppable area
+	// const handleDragLeave = (e) => {
+	// 	const target = e.target.closest('.droppable')
+	// 	const hr = target.querySelector('.droppable-line')
+	// 	if (hr) {
+	// 		hr.remove()
+	// 	}
+	// }
 
-	//Kill the hr if the user drags out of the droppable area
-	const handleDragLeave = (e) => {
-		const target = e.target.closest('.droppable')
-		const hr = target.querySelector('.droppable-line')
-		if (hr) {
-			hr.remove()
-		}
-	}
+	// const handleDragOver = (e) => {
+	// 	e.preventDefault()
 
-	const handleDragOver = (e) => {
-		e.preventDefault()
+	// 	const target = e.target.closest('.droppable')
+	// 	const items = target.querySelectorAll('.draggable')
+	// 	const mouseY = e.clientY
 
-		const target = e.target.closest('.droppable')
-		const items = target.querySelectorAll('.draggable')
-		const mouseY = e.clientY
+	// 	const targetIndex = [...items].reduce(
+	// 		(closestIndex, child, index) => {
+	// 			const box = child.getBoundingClientRect()
+	// 			const offset = mouseY - box.top - box.height / 2
 
-		const targetIndex = [...items].reduce(
-			(closestIndex, child, index) => {
-				const box = child.getBoundingClientRect()
-				const offset = mouseY - box.top - box.height / 2
+	// 			if (offset < 0 && offset > closestIndex.offset) {
+	// 				return { offset, index }
+	// 			} else {
+	// 				return closestIndex
+	// 			}
+	// 		},
+	// 		{ offset: Number.NEGATIVE_INFINITY }
+	// 	).index
 
-				if (offset < 0 && offset > closestIndex.offset) {
-					return { offset, index }
-				} else {
-					return closestIndex
-				}
-			},
-			{ offset: Number.NEGATIVE_INFINITY }
-		).index
+	// 	//If there is a droppable-line, don't add another one
+	// 	if (target.querySelector('.droppable-line')) {
+	// 		return
+	// 	}
 
-		//If there is a droppable-line, don't add another one
-		if (target.querySelector('.droppable-line')) {
-			return
-		}
+	// 	const hr = document.createElement('hr')
+	// 	hr.classList.add('droppable-line')
 
-		const hr = document.createElement('hr')
-		hr.classList.add('droppable-line')
+	// 	if (targetIndex === items.length) {
+	// 		target.appendChild(hr)
+	// 	} else {
+	// 		target.insertBefore(hr, items[targetIndex])
+	// 	}
+	// }
 
-		if (targetIndex === items.length) {
-			target.appendChild(hr)
-		} else {
-			target.insertBefore(hr, items[targetIndex])
-		}
-	}
+	// const handleDrop = (e, targetColumn) => {
+	// 	const index = parseInt(e.dataTransfer.getData('index'))
+	// 	const sourceColumn = e.dataTransfer.getData('column')
 
-	const handleDrop = (e, targetColumn) => {
-		const index = parseInt(e.dataTransfer.getData('index'))
-		const sourceColumn = e.dataTransfer.getData('column')
+	// 	if (sourceColumn !== targetColumn) {
+	// 		const item = sourceColumn === 'column1' ? column1[index] : column2[index]
 
-		if (sourceColumn !== targetColumn) {
-			const item = sourceColumn === 'column1' ? column1[index] : column2[index]
+	// 		// Append the item to the end of the target column
+	// 		const targetArray = targetColumn === 'column1' ? column1 : column2
+	// 		targetArray.push(item)
 
-			// Append the item to the end of the target column
-			const targetArray = targetColumn === 'column1' ? column1 : column2
-			targetArray.push(item)
+	// 		// Remove the item from the source column
+	// 		const sourceArray = sourceColumn === 'column1' ? column1 : column2
+	// 		sourceArray.splice(index, 1)
 
-			// Remove the item from the source column
-			const sourceArray = sourceColumn === 'column1' ? column1 : column2
-			sourceArray.splice(index, 1)
+	// 		setColumn1([...column1])
+	// 		setColumn2([...column2])
+	// 	}
 
-			setColumn1([...column1])
-			setColumn2([...column2])
-		}
+	// 	const target = e.target.closest('.droppable')
+	// 	const hr = target.querySelector('.droppable-line')
+	// 	if (hr) {
+	// 		hr.remove()
+	// 	}
+	// }
 
-		const target = e.target.closest('.droppable')
-		const hr = target.querySelector('.droppable-line')
-		if (hr) {
-			hr.remove()
-		}
-	}
+	// const isItemInColumn = (item, column) => {
+	// 	const columnArray = column === 'column1' ? column1 : column2
+	// 	return columnArray.includes(item)
+	// }
 
-	const isItemInColumn = (item, column) => {
-		const columnArray = column === 'column1' ? column1 : column2
-		return columnArray.includes(item)
-	}
+	// const getTargetIndex = (e) => {
+	// 	const target = e.target.closest('.droppable')
+	// 	const items = target.querySelectorAll('.draggable')
+	// 	const mouseY = e.clientY
+	// 	let targetIndex = -1
 
-	const getTargetIndex = (e) => {
-		const target = e.target.closest('.droppable')
-		const items = target.querySelectorAll('.draggable')
-		const mouseY = e.clientY
-		let targetIndex = -1
+	// 	items.forEach((child, index) => {
+	// 		const box = child.getBoundingClientRect()
+	// 		const offset = mouseY - box.top - box.height / 2
 
-		items.forEach((child, index) => {
-			const box = child.getBoundingClientRect()
-			const offset = mouseY - box.top - box.height / 2
+	// 		if (offset < 0 && targetIndex === -1) {
+	// 			targetIndex = index
+	// 		}
+	// 	})
 
-			if (offset < 0 && targetIndex === -1) {
-				targetIndex = index
-			}
-		})
+	// 	if (targetIndex === -1) {
+	// 		targetIndex = items.length
+	// 	}
 
-		if (targetIndex === -1) {
-			targetIndex = items.length
-		}
-
-		return targetIndex
-	}
+	// 	return targetIndex
+	// }
 
 	return (
 		<>
@@ -202,8 +194,8 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className="bg-white dark:bg-neutral-900">
-					{/* Title */}
+				{/* <section className="bg-white dark:bg-neutral-900">
+					
 					<div className="text-center">
 						<h1 className="text-3xl font-extrabold">
 							Choose from a variety of blocks
@@ -216,7 +208,7 @@ export default function Home() {
 
 					<div className="flex items-center justify-center">
 						<div className="max-w-4xl w-screen rounded-lg border">
-							{/* <div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
+							<div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
 								<div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
 									<div className="flex items-center space-x-1 sm:pr-4">
 										<button
@@ -273,7 +265,7 @@ export default function Home() {
 										Background Color
 									</button>
 								</div>
-							</div> */}
+							</div>
 							<div className="flex flex-col gap-2 p-2">
 								<div className="bg-neutral-50 rounded-xl p-2 w-full">
 									<div className="w-full bg-neutral-100 h-min p-2 rounded-lg">
@@ -334,7 +326,7 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-				</section>
+				</section> */}
 
 				<footer className="flex-col items-center justify-center">
 					<div className="p-4 flex items-center justify-center">
