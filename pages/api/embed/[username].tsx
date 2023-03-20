@@ -5,6 +5,7 @@ import { container } from '../../../components'
 const { graphql } = require('@octokit/graphql')
 
 type UserData = {
+	username?: string
 	thisyear?: number
 	thismonth?: number
 	thisweek?: number
@@ -14,6 +15,11 @@ type UserData = {
 	progress?: number
 	toplang?: [string, unknown][]
 	toprepos?: [string, unknown][]
+	commitgraph?: number[]
+}
+
+type customlist = {
+	items: string[]
 }
 
 type Data = {
@@ -41,7 +47,7 @@ export default async function handler(
 	const textcolor = req.query.textcolor?.toString()
 	const bgcolor = req.query.bgcolor?.toString()
 	const panels = req.query.panels?.toString().split(',')
-	let userData: UserData = {}
+	let userData = {} as UserData
 	const panelProps: PanelProps = { color, titlecolor, textcolor, bgcolor }
 
 	//username will exist but we should validate username
@@ -49,12 +55,51 @@ export default async function handler(
 		return res.status(400).json({ error: { message: 'Invalid username' } })
 	}
 
-	const validPanels = ['userstatistics', 'toplanguages', 'toprepositories']
+	const validPanels = [
+		'userstatistics',
+		'toplanguages',
+		'toprepositories',
+		'commitgraph',
+		'userwelcome',
+		'customlist',
+	]
 
 	if (!panels || panels.some((panel) => !validPanels.includes(panel))) {
 		return res
 			.status(400)
 			.json({ error: { message: 'The "panels" query parameter is required' } })
+	}
+
+	//get how many custom lists there are
+	let customListCount = 0
+	panels.forEach((panel) => {
+		if (panel.includes('customlist')) {
+			customListCount++
+		}
+	})
+
+	let customLists: customlist[] = []
+
+	//if there are custom lists, get url params for them in interval like customlist1=, customlist2=, customlist3=
+	if (customListCount > 0) {
+		//get custom list url params
+		for (let i = 1; i <= customListCount; i++) {
+			const customList = req.query[`customlist${i}`]?.toString()
+			if (!customList) {
+				return res
+					.status(400)
+					.json({ error: { message: 'Invalid custom list' } })
+			}
+
+			customLists.push({
+				items: customList.split(','),
+			})
+		}
+	}
+
+	//custom list
+	if (panels.includes('customlist')) {
+		//After panels url param, get params customlist1, customlist2, customlist3 or how many more there are
 	}
 
 	const date = new Date()
@@ -65,7 +110,7 @@ export default async function handler(
 			contributionsCollection(from: "${date.toISOString()}", to: "${new Date().toISOString()}") {
 
 			${
-				panels.includes('userstatistics')
+				panels.includes('userstatistics') || panels.includes('commitgraph')
 					? `totalIssueContributions
 					totalPullRequestContributions
 					contributionCalendar {
@@ -107,19 +152,29 @@ export default async function handler(
 		}
 		}`
 
-	const resp = await graphql(query, {
-		headers: {
-			authorization: `token ${process.env.GITHUB_TOKEN}`,
-		},
-	})
-		.then((res: any) => res)
-		.catch((err: any) => {
-			res.status(404).json({
-				error: {
-					message: err.message,
-				},
-			})
+	//if panels includes toplanguages or toprepositories or userstatistics or commitgraph, get data from github api
+
+	let resp = null
+	if (
+		panels.includes('toplanguages') ||
+		panels.includes('toprepositories') ||
+		panels.includes('userstatistics') ||
+		panels.includes('commitgraph')
+	) {
+		resp = await graphql(query, {
+			headers: {
+				authorization: `token ${process.env.GITHUB_TOKEN}`,
+			},
 		})
+			.then((res: any) => res)
+			.catch((err: any) => {
+				res.status(404).json({
+					error: {
+						message: err.message,
+					},
+				})
+			})
+	}
 
 	const ranking = (thisyear: number) => {
 		const commits = thisyear || 0
@@ -131,6 +186,8 @@ export default async function handler(
 		if (commits > 100) return 'C'
 		if (commits > 50) return 'D'
 	}
+
+	//Set userData username
 
 	if (panels!.includes('userstatistics')) {
 		const resproot = resp.user.contributionsCollection
@@ -200,8 +257,22 @@ export default async function handler(
 		userData.toprepos = topRepos
 	}
 
+	if (panels!.includes('commitgraph')) {
+		//Get count of contributions each month for the last 13 months
+		const resproot = resp.user.contributionsCollection
+		const weeks = resproot.contributionCalendar.weeks
+		const contributions = weeks.map((week: any) => {
+			const days = week.contributionDays
+			return days.reduce((a: any, b: any) => a + b.contributionCount, 0)
+		})
+		userData.commitgraph = contributions
+	}
+
+	//This is just free data for now
+	userData.username = username
+
 	const svg = ReactDomServer.renderToString(
-		container(userData, panelProps, panels!)
+		container(userData, panelProps, panels!, customLists)
 	)
 	res.setHeader('Content-Type', 'image/svg+xml')
 	// @ts-ignore

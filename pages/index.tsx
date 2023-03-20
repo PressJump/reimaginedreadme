@@ -4,18 +4,138 @@ import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import widgetpreview from '../public/svgwidgetpreview.svg'
 import wizardhand from '../public/wizardhand.png'
+import { useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
+type panels = {
+	name: string
+	colspan: number
+}
+
 export default function Home() {
+	//panels type
+	// const [column1, setColumn1] = useState([
+	// 	{ name: 'userstatistics', colspan: 2 },
+	// 	{ name: 'toprepositories', colspan: 1 },
+	// 	{ name: 'toplanguages', colspan: 1 },
+	// 	{ name: 'commitgraph', colspan: 1 },
+	// 	{ name: 'userwelcome', colspan: 5 },
+	// ])
+
+	// const [column2, setColumn2] = useState([])
+
+	// const handleDragStart = (e, index, column) => {
+	// 	e.dataTransfer.setData('index', index)
+	// 	e.dataTransfer.setData('column', column)
+	// }
+
+	// //Kill the hr if the user drags out of the droppable area
+	// const handleDragLeave = (e) => {
+	// 	const target = e.target.closest('.droppable')
+	// 	const hr = target.querySelector('.droppable-line')
+	// 	if (hr) {
+	// 		hr.remove()
+	// 	}
+	// }
+
+	// const handleDragOver = (e) => {
+	// 	e.preventDefault()
+
+	// 	const target = e.target.closest('.droppable')
+	// 	const items = target.querySelectorAll('.draggable')
+	// 	const mouseY = e.clientY
+
+	// 	const targetIndex = [...items].reduce(
+	// 		(closestIndex, child, index) => {
+	// 			const box = child.getBoundingClientRect()
+	// 			const offset = mouseY - box.top - box.height / 2
+
+	// 			if (offset < 0 && offset > closestIndex.offset) {
+	// 				return { offset, index }
+	// 			} else {
+	// 				return closestIndex
+	// 			}
+	// 		},
+	// 		{ offset: Number.NEGATIVE_INFINITY }
+	// 	).index
+
+	// 	//If there is a droppable-line, don't add another one
+	// 	if (target.querySelector('.droppable-line')) {
+	// 		return
+	// 	}
+
+	// 	const hr = document.createElement('hr')
+	// 	hr.classList.add('droppable-line')
+
+	// 	if (targetIndex === items.length) {
+	// 		target.appendChild(hr)
+	// 	} else {
+	// 		target.insertBefore(hr, items[targetIndex])
+	// 	}
+	// }
+
+	// const handleDrop = (e, targetColumn) => {
+	// 	const index = parseInt(e.dataTransfer.getData('index'))
+	// 	const sourceColumn = e.dataTransfer.getData('column')
+
+	// 	if (sourceColumn !== targetColumn) {
+	// 		const item = sourceColumn === 'column1' ? column1[index] : column2[index]
+
+	// 		// Append the item to the end of the target column
+	// 		const targetArray = targetColumn === 'column1' ? column1 : column2
+	// 		targetArray.push(item)
+
+	// 		// Remove the item from the source column
+	// 		const sourceArray = sourceColumn === 'column1' ? column1 : column2
+	// 		sourceArray.splice(index, 1)
+
+	// 		setColumn1([...column1])
+	// 		setColumn2([...column2])
+	// 	}
+
+	// 	const target = e.target.closest('.droppable')
+	// 	const hr = target.querySelector('.droppable-line')
+	// 	if (hr) {
+	// 		hr.remove()
+	// 	}
+	// }
+
+	// const isItemInColumn = (item, column) => {
+	// 	const columnArray = column === 'column1' ? column1 : column2
+	// 	return columnArray.includes(item)
+	// }
+
+	// const getTargetIndex = (e) => {
+	// 	const target = e.target.closest('.droppable')
+	// 	const items = target.querySelectorAll('.draggable')
+	// 	const mouseY = e.clientY
+	// 	let targetIndex = -1
+
+	// 	items.forEach((child, index) => {
+	// 		const box = child.getBoundingClientRect()
+	// 		const offset = mouseY - box.top - box.height / 2
+
+	// 		if (offset < 0 && targetIndex === -1) {
+	// 			targetIndex = index
+	// 		}
+	// 	})
+
+	// 	if (targetIndex === -1) {
+	// 		targetIndex = items.length
+	// 	}
+
+	// 	return targetIndex
+	// }
+
 	return (
 		<>
 			<body className="bg-white dark:bg-neutral-900">
-				<Image
+				{/* <Image
 					src={wizardhand}
 					alt="wizard hand"
 					className="w-4/12 fixed right-20 top-2/4"
-				/>
+				/> */}
 				<section className="bg-white dark:bg-neutral-900">
 					<div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-8 lg:px-12">
 						<a
@@ -73,6 +193,140 @@ export default function Home() {
 						</div>
 					</div>
 				</section>
+
+				{/* <section className="bg-white dark:bg-neutral-900">
+					
+					<div className="text-center">
+						<h1 className="text-3xl font-extrabold">
+							Choose from a variety of blocks
+						</h1>
+						<p className="mb-8 text-lg font-normal text-neutral-500 lg:text-lg sm:px-16 xl:px-48 dark:text-neutral-400">
+							We have a variety of blocks to choose from to make your readme
+							stand out.
+						</p>
+					</div>
+
+					<div className="flex items-center justify-center">
+						<div className="max-w-4xl w-screen rounded-lg border">
+							<div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
+								<div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
+									<div className="flex items-center space-x-1 sm:pr-4">
+										<button
+											type="button"
+											className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 flex gap-2 justify-center items-center"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="25"
+												height="25"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											>
+												<rect
+													x="3"
+													y="3"
+													width="18"
+													height="18"
+													rx="2"
+													ry="2"
+												></rect>
+												<line x1="12" y1="8" x2="12" y2="16"></line>
+												<line x1="8" y1="12" x2="16" y2="12"></line>
+											</svg>
+											Create custom list component
+										</button>
+									</div>
+									<div className="flex flex-wrap items-center space-x-1 sm:pl-4"></div>
+								</div>
+								<div className="flex">
+									<button
+										type="button"
+										className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 flex gap-2 justify-center items-center"
+									>
+										<span className="w-4 h-4 ml-2 text-xs bg-neutral-800 rounded-full border border-neutral-400"></span>
+										Text Color
+									</button>
+									<button
+										type="button"
+										className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 flex gap-2 justify-center items-center"
+									>
+										<span className="w-4 h-4 ml-2 text-xs bg-purple-500 rounded-full border border-neutral-400"></span>
+										Primary Color
+									</button>
+									<button
+										type="button"
+										className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 flex gap-2 justify-center items-center"
+									>
+										<span className="w-4 h-4 ml-2 text-xs bg-neutral-200 rounded-full border border-neutral-400"></span>
+										Background Color
+									</button>
+								</div>
+							</div>
+							<div className="flex flex-col gap-2 p-2">
+								<div className="bg-neutral-50 rounded-xl p-2 w-full">
+									<div className="w-full bg-neutral-100 h-min p-2 rounded-lg">
+										🏗️ Our Blocks
+									</div>
+									<div
+										className="py-3 droppable blocksgrid "
+										onDragOver={(e) => handleDragOver(e)}
+										onDragLeave={(e) => handleDragLeave(e)}
+										onDrop={(e) => handleDrop(e, 'column1')}
+									>
+										{column1.map((item, index) => (
+											<img
+												src={'/api/embed/pressjump?panels=' + item.name}
+												className={`item1 item-span-${item.colspan} hover hover:cursor-pointer`}
+												key={index}
+												draggable
+												onDragStart={(e) =>
+													handleDragStart(e, index, 'column1')
+												}
+											/>
+										))}
+									</div>
+								</div>
+
+								<div className="bg-neutral-50 rounded-xl p-2 w-full">
+									<div className="w-full bg-neutral-100 h-min p-2 rounded-lg">
+										📝 Your README
+									</div>
+									<div
+										className="py-3 droppable readmegrid"
+										onDragOver={(e) => handleDragOver(e)}
+										onDragLeave={(e) => handleDragLeave(e)}
+										onDrop={(e) => handleDrop(e, 'column2')}
+									>
+										{column2.map((item, index) => (
+											<img
+												src={'/api/embed/pressjump?panels=' + item.name}
+												className={`item2 item-span-${item.colspan} hovereffect hover:cursor-pointer`}
+												key={index}
+												draggable
+												onDragStart={(e) =>
+													handleDragStart(e, index, 'column2')
+												}
+											/>
+										))}
+									</div>
+								</div>
+
+								<div className="bg-neutral-50 rounded-xl p-2 w-full text-right">
+									<button
+										type="button"
+										className="focus:outline-none text-white font-extrabold bg-purple-500 hover:bg-purple-600 focus:ring-4 focus:ring-purple-300 rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+									>
+										Generate README
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section> */}
 
 				<footer className="flex-col items-center justify-center">
 					<div className="p-4 flex items-center justify-center">

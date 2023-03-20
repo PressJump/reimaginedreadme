@@ -1,3 +1,66 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.droppable-line {
+	border: 2px solid #ccc;
+}
+
+.blocksgrid {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr); /* two columns */
+	grid-gap: 10px; /* gap between items */
+}
+
+@media (max-width: 500px) {
+	.grid-container {
+		grid-template-columns: 1fr; /* one column */
+	}
+}
+
+.readmegrid {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	column-gap: 10px;
+
+	/* gap */
+}
+
+.item1 {
+	height: 100px;
+}
+
+.item2 {
+	/* enforce height */
+	height: 220px;
+}
+
+.item-span-1 {
+	/* col span for grid */
+	grid-column: span 1 / span 1;
+}
+
+.item-span-2 {
+	grid-column: span 1/1;
+}
+
+.item-span-3 {
+	grid-column: span 3 / span 3;
+}
+
+.item-span-4 {
+	grid-column: span 4 / span 4;
+}
+
+.item-span-5 {
+	grid-column: span 5 / span 5;
+}
+
+.hovereffect:hover {
+	transition: all 0.2s ease-in-out;
+	--tw-scale-x: 1.02;
+	--tw-scale-y: 1.02;
+	transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+		rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+		scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}

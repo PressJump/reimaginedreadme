@@ -1,7 +1,14 @@
 import { stdout } from 'process'
-import { Userstatspanel, Usertoplangspanel, Usertoprepositoriespanel } from '.'
+import {
+	Userstatspanel,
+	Usertoplangspanel,
+	Usertoprepositoriespanel,
+	Usercommitgraph,
+	Userwelcome,
+} from '.'
 
 type UserData = {
+	username?: string
 	thisyear?: number
 	thismonth?: number
 	thisweek?: number
@@ -11,6 +18,7 @@ type UserData = {
 	progress?: number
 	toplang?: [string, unknown][]
 	toprepos?: [string, unknown][]
+	commitgraph?: number[]
 }
 
 type PanelProps = {
@@ -20,10 +28,20 @@ type PanelProps = {
 	bgcolor?: string
 }
 
+type componentpos = {
+	x: number
+	y: number
+}
+
+type customlist = {
+	items: string[]
+}
+
 export const container = (
 	userData: UserData,
 	panelProps: PanelProps,
-	panels: string[]
+	panels: string[],
+	customLists: customlist[]
 ) => {
 	//SVG of GitHub Stats taken from https://github.com/LordDashMe/github-contribution-stats under MIT License
 	//I really love the look of the embed and wanted to use it as a base line
@@ -94,10 +112,22 @@ export const container = (
             font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
         }
 
+		.bigtitle {
+			font-size: 25px;
+            font-weight: 400;
+            fill: #${panelProps.titlecolor ? panelProps.titlecolor : '000'};
+            animation: fadeIn 0.8s ease-in-out forwards;
+			font-family: 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
+		}
+
         .link {
             font: bold;
             fill: rgb(0, 102, 255);
         }
+
+		.graph {
+			stroke: #${panelProps.color ? panelProps.color : 'eacb2f'};
+		}
 
         @keyframes scaleIn {
             from {
@@ -126,94 +156,136 @@ export const container = (
             }
         }`
 
+	// ================================================================================
 	let width = 0
+	let height = 229
+	let x = 0
+	let y = 0
+	const panelComponents: JSX.Element[] = []
 
-	let panelComponents: JSX.Element[] = []
 	panels.forEach((panel) => {
-		if (panel === 'userstatistics') {
-			const panelComponent = (
-				<Userstatspanel
-					userData={userData}
-					componentx={Number(width.toString())}
-				/>
-			)
-			width += 310
-			panelComponents.push(panelComponent)
+		let panelComponent
+
+		//if its less than 850 we just need to set the width
+		if (x >= 890) {
+			x = 0
+			y += 229
+			height += 229
+			width = 890
 		}
 
-		if (panel === 'toplanguages') {
-			const panelComponent = (
-				<Usertoplangspanel
-					topLanguages={userData.toplang!}
-					componentx={Number(width.toString()) + 7}
-				/>
-			)
-			width += 170
-			panelComponents.push(panelComponent)
-		}
+		x += 10
 
-		if (panel === 'toprepositories') {
-			const panelComponent = (
-				<Usertoprepositoriespanel
-					topRepositories={userData.toprepos!}
-					componentx={Number(width.toString()) + 7}
-				/>
-			)
-			width += 180
-			panelComponents.push(panelComponent)
-		}
-
-		//Insert a divider between panels
-		panelComponents.push(
-			<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
-				<g className="item" transform="translate(0, 0)">
-					<line
-						x1={width + 1}
-						y1="40"
-						x2={width + 1}
-						y2="200"
-						style={{ stroke: '#d9d9d9', strokeWidth: 1 }}
+		switch (panel) {
+			case 'userstatistics':
+				panelComponent = (
+					<Userstatspanel
+						userData={userData}
+						componentpos={{ x: Number(x.toString()), y: y }}
 					/>
-				</g>
-			</svg>
-		)
+				)
+				x += 310
+				break
+			case 'toplanguages':
+				panelComponent = (
+					<Usertoplangspanel
+						topLanguages={userData.toplang!}
+						componentpos={{ x: Number(x.toString()), y: y }}
+					/>
+				)
+				x += 180
+				break
+			case 'toprepositories':
+				panelComponent = (
+					<Usertoprepositoriespanel
+						topRepositories={userData.toprepos!}
+						componentpos={{ x: Number(x.toString()), y: y }}
+					/>
+				)
+				x += 180
+				break
+			case 'commitgraph':
+				panelComponent = (
+					<Usercommitgraph
+						monthcontributions={userData.commitgraph!}
+						componentpos={{ x: Number(x.toString()), y: y }}
+					/>
+				)
+				x += 180
+				break
+			case 'userwelcome':
+				panelComponent = (
+					<Userwelcome
+						username={userData.username || 'Username'}
+						componentpos={{ x: Number(x.toString()), y: y }}
+					/>
+				)
+				x += 890
+				break
+			default:
+				return // handle unknown panels here
+		}
+
+		if (x > width) width = x
+
+		panelComponents.push(panelComponent)
+
+		if (x < 890) {
+			// Insert a divider between panels
+			panelComponents.push(
+				<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0">
+					<g className="item" transform={`translate(${x}, ${y})`}>
+						<line
+							x1={0}
+							y1="40"
+							x2={0}
+							y2="200"
+							style={{ stroke: '#d9d9d9', strokeWidth: 1 }}
+						/>
+					</g>
+				</svg>
+			)
+		}
 	})
 
 	return (
 		<>
-			<svg xmlns="http://www.w3.org/2000/svg" width={width} height="230">
+			<svg xmlns="http://www.w3.org/2000/svg" width={width} height={height}>
 				<style>${style}</style>
 				<rect
 					xmlns="http://www.w3.org/2000/svg"
 					x="0.5"
 					y="0.5"
 					rx="12"
-					width={width}
-					height="100%"
+					width={width - 1}
+					height={height - 1}
 					fill={panelProps.bgcolor ? `#${panelProps.bgcolor}` : '#efefef'}
 					stroke="#e1e4e8"
 				/>
 
 				{panelComponents}
 
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					xmlnsXlink="http://www.w3.org/1999/xlink"
-					x="0"
-					y="200"
-				>
-					<g className="item" transform="translate(25, 15)">
-						<text className="contribution-stats remarks" x="0" y="0">
-							Do you like how this widget looks?{' '}
-							<a
-								href="https://github.com/PressJump/reimaginedreadme"
-								className="link"
-							>
-								Get it for yourself.
-							</a>
-						</text>
-					</g>
-				</svg>
+				{/* If the width is not 310 or more don't show this */}
+				{width >= 310 && (
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						xmlnsXlink="http://www.w3.org/1999/xlink"
+						x="0"
+						y="200"
+					>
+						<g className="item" transform="translate(25, 15)">
+							<text className="contribution-stats remarks" x="0" y="0">
+								Do you like how this widget looks?{' '}
+								<a
+									href="https://github.com/PressJump/reimaginedreadme"
+									className="link"
+								>
+									Get it for yourself.
+								</a>
+							</text>
+						</g>
+					</svg>
+				)}
 			</svg>
 		</>
 	)
