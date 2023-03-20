@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { type } from 'os'
 import { devsvg } from '../../utils/devsvg'
+//@ts-ignore
 import * as d3 from 'd3'
 
 export const Usercommitgraph = ({
@@ -27,9 +28,9 @@ export const Usercommitgraph = ({
 
 	// Define the line function with x offset
 	const line = d3
-		.line()
-		.x((d, i) => xScale(i))
-		.y((d) => yScale(d))
+		.line<{ d: number }, number>()
+		.x((d: number, i: number) => xScale(i))
+		.y((d: number) => yScale(d))
 
 	// Return the SVG element with the path element inside it
 	return (
