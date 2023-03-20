@@ -8,13 +8,13 @@
 
 .blocksgrid {
 	display: grid;
-	grid-template-columns: repeat(10, 1fr); /* two columns */
-	grid-gap: 10px; /* gap between items */
+	grid-template-columns: repeat(10, 1fr);
+	grid-gap: 10px;
 }
 
 @media (max-width: 500px) {
 	.grid-container {
-		grid-template-columns: 1fr; /* one column */
+		grid-template-columns: 1fr;
 	}
 }
 
