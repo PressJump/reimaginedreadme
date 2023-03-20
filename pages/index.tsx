@@ -28,7 +28,7 @@ export default function Home() {
 		{ name: 'toprepositories', colspan: 1 },
 		{ name: 'toplanguages', colspan: 1 },
 		{ name: 'commitgraph', colspan: 1 },
-		{ name: 'userwelcome', colspan: 4 },
+		{ name: 'userwelcome', colspan: 5 },
 	])
 
 	const [column2, setColumn2] = useState([])
@@ -90,16 +90,16 @@ export default function Home() {
 		if (sourceColumn !== targetColumn) {
 			const item = sourceColumn === 'column1' ? column1[index] : column2[index]
 
-			if (!isItemInColumn(item, targetColumn)) {
-				const sourceArray = sourceColumn === 'column1' ? column1 : column2
-				const targetArray = targetColumn === 'column1' ? column1 : column2
+			// Append the item to the end of the target column
+			const targetArray = targetColumn === 'column1' ? column1 : column2
+			targetArray.push(item)
 
-				sourceArray.splice(index, 1)
-				targetArray.splice(getTargetIndex(e), 0, item)
+			// Remove the item from the source column
+			const sourceArray = sourceColumn === 'column1' ? column1 : column2
+			sourceArray.splice(index, 1)
 
-				setColumn1([...column1])
-				setColumn2([...column2])
-			}
+			setColumn1([...column1])
+			setColumn2([...column2])
 		}
 
 		const target = e.target.closest('.droppable')
@@ -135,6 +135,7 @@ export default function Home() {
 
 		return targetIndex
 	}
+
 	return (
 		<>
 			<body className="bg-white dark:bg-neutral-900">
@@ -215,7 +216,7 @@ export default function Home() {
 
 					<div className="flex items-center justify-center">
 						<div className="max-w-4xl w-screen rounded-lg border">
-							<div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
+							{/* <div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
 								<div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
 									<div className="flex items-center space-x-1 sm:pr-4">
 										<button
@@ -272,60 +273,52 @@ export default function Home() {
 										Background Color
 									</button>
 								</div>
-							</div>
+							</div> */}
 							<div className="flex flex-col gap-2 p-2">
 								<div className="bg-neutral-50 rounded-xl p-2 w-full">
 									<div className="w-full bg-neutral-100 h-min p-2 rounded-lg">
 										🏗️ Our Blocks
 									</div>
 									<div
-										className="py-3 droppable grid grid-cols-5 gap-2 "
+										className="py-3 droppable blocksgrid "
 										onDragOver={(e) => handleDragOver(e)}
 										onDragLeave={(e) => handleDragLeave(e)}
 										onDrop={(e) => handleDrop(e, 'column1')}
 									>
 										{column1.map((item, index) => (
-											<div
-												className={`rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable col-span-${item.colspan}`}
+											<img
+												src={'/api/embed/pressjump?panels=' + item.name}
+												className={`item1 item-span-${item.colspan} hover hover:cursor-pointer`}
 												key={index}
 												draggable
 												onDragStart={(e) =>
 													handleDragStart(e, index, 'column1')
 												}
-											>
-												<img
-													src={'/api/embed/pressjump?panels=' + item.name}
-													className="h-36 w-auto"
-												/>
-											</div>
+											/>
 										))}
 									</div>
 								</div>
 
 								<div className="bg-neutral-50 rounded-xl p-2 w-full">
 									<div className="w-full bg-neutral-100 h-min p-2 rounded-lg">
-										Your README (Drag blocks here)
+										📝 Your README
 									</div>
 									<div
-										className="py-3 droppable flex gap-2 h-60"
+										className="py-3 droppable readmegrid"
 										onDragOver={(e) => handleDragOver(e)}
 										onDragLeave={(e) => handleDragLeave(e)}
 										onDrop={(e) => handleDrop(e, 'column2')}
 									>
 										{column2.map((item, index) => (
-											<div
-												className="rounded-md transition duration-200 hover:scale-105 hover:cursor-pointer draggable"
+											<img
+												src={'/api/embed/pressjump?panels=' + item.name}
+												className={`item2 item-span-${item.colspan} hovereffect hover:cursor-pointer`}
 												key={index}
 												draggable
 												onDragStart={(e) =>
 													handleDragStart(e, index, 'column2')
 												}
-											>
-												<img
-													src={'/api/embed/pressjump?panels=' + item}
-													className="h-58"
-												/>
-											</div>
+											/>
 										))}
 									</div>
 								</div>
