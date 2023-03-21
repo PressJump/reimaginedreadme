@@ -1,19 +1,37 @@
+
 <div align="center">
 <img width="120" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/558ab792aec59eb639671d41c5666ef12f6d0d80/assets/Writing%20hand/Light/3D/writing_hand_3d_light.png"/>
 
 ## Reimagined Readme
 
-GitHub readme widgets are too seperated and you need to add 4 different widgets with all different styles to show your GitHub statistics. **_Reimagined Readme_** tries to fix this problem. This project is currently very experimental as I am working on this to get rid of burnout and learn new things like the GitHub GraphQL API.
+GitHub readme widgets are too seperated and you need to add 4 different widgets with all different styles to show your GitHub statistics. **_Reimagined Readme_** tries to fix this problem by giving a layout to your readme that does not trigger OCD.
 
 </div>
 
 ### Example Widget:
+[![reimaginedreadme](https://myreadme.vercel.app/api/embed/pressjump?panels=userstatistics,toprepositories,toplanguages,commitgraph)](https://github.com/PressJump/reimaginedreadme)
 
-[![reimaginedreadme](https://myreadme.vercel.app/api/embed/pressjump?panels=userstatistics,toprepositories,toplanguages)](https://github.com/PressJump/reimaginedreadme)
 
-### Credits:
+## How to install
+To create a custom widget we have a API route `https://myreadme.vercel.app/api/embed/YOURNAME` replacing yourname with well uh yourname.
+#### Adding Widgets (Populating your Widget)
+To populate your widget with your contribution stats, top repositories, or your commit graph you need to define which panels should be in the widget so you customize your own widget to your liking. We can do this through adding the url parameter panels `https://myreadme.vercel.app/api/embed/YOURNAME?panels=`. The order you put the panels is important as they will be reordered dependent on their size. 
 
+#### Valid Panels Include
+
+ - **userstatistics** - *(Commit data [Year, Month, Week], PRs, Issues)*
+ - **toprepositories** - *(Top starred repositories you own/have contributed to)*
+ - **toplanguages** - *(Your top languages ranked by amount of commits using them)*
+ - **commitgraph** - *(A graph of your commit engagement to GitHub)*
+ - **userwelcome** - *(A welcome text your profile)*
+ More panels will be added in the future, check issues for upcoming panels.
+
+#### Using one panel only
+Maybe a panel we have developed is superior and you want to add it to your GitHub profile but have other widgets from a different project. To do this, use the above steps but only include one panel in the panels list. 
+
+## Credits:
 - **[github-contribution-stats](https://github.com/LordDashMe/github-contribution-stats)** [\[MIT\]](https://github.com/LordDashMe/github-contribution-stats/blob/master/LICENSE) - A SVG Based Github Contribution Stats Project (Used as base for SVG)
 - **[devicon](https://github.com/devicons/devicon)** [\[MIT\]](https://github.com/devicons/devicon/blob/master/LICENSE) - Developer Icons (Used for Language Logos)
 - **[FeatherIcons](https://github.com/feathericons/feather)** [\[MIT\]](https://github.com/feathericons/feather/blob/master/LICENSE) - Open Source Icons (Used for some icons on the widget)
 - **[Fluent Emoji by Microsoft](https://github.com/microsoft/fluentui-emoji)** [\[MIT\]](https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE) There is an [ongoing conversation](https://github.com/microsoft/fluentui-emoji/issues/18) regarding the license. - Modern Emoji's (Used as the logo)
+- **[D3](https://github.com/d3/d3)** [\[ISC\]](https://github.com/d3/d3/blob/main/LICENSE) - Graphing SVG Path Logic (Used for Commit Graph)
