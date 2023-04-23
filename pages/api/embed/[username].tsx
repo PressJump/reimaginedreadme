@@ -64,19 +64,27 @@ export default async function handler(
 		'customlist',
 	]
 
-	if (!panels || panels.some((panel) => !validPanels.includes(panel))) {
+	if (!panels)
 		return res
 			.status(400)
 			.json({ error: { message: 'The "panels" query parameter is required' } })
+	for (let i = 0; i < panels.length; i++) {
+		if (!validPanels.includes(panels[i])) {
+			return res.status(400).json({
+				error: {
+					message: 'The "panels" query parameter contains invalid values',
+				},
+			})
+		}
 	}
 
 	//get how many custom lists there are
 	let customListCount = 0
-	panels.forEach((panel) => {
+	for (const panel of panels) {
 		if (panel.includes('customlist')) {
 			customListCount++
 		}
-	})
+	}
 
 	let customLists: customlist[] = []
 
@@ -97,175 +105,147 @@ export default async function handler(
 		}
 	}
 
-	//custom list
-	if (panels.includes('customlist')) {
-		//After panels url param, get params customlist1, customlist2, customlist3 or how many more there are
-	}
-
 	const date = new Date()
 	date.setMonth(date.getMonth() - 12)
 	//query get all commits, issues, pullrequests and code reviews last 12 months
 	const query = `query {
 		user(login: "${username}") {
 			contributionsCollection(from: "${date.toISOString()}", to: "${new Date().toISOString()}") {
-
-			${
-				panels.includes('userstatistics') || panels.includes('commitgraph')
-					? `totalIssueContributions
-					totalPullRequestContributions
-					contributionCalendar {
-						totalContributions
-						weeks {
-							contributionDays {
-								contributionCount
-								date
+			
+				totalIssueContributions
+						totalPullRequestContributions
+						contributionCalendar {
+							totalContributions
+							weeks {
+								contributionDays {
+									contributionCount
+									date
+								}
 							}
 						}
-					}`
-					: ''
-			}	
-			
-
-			${
-				panels.includes('toplanguages') || panels.includes('toprepositories')
-					? `commitContributionsByRepository {
-						repository {
-							name
-							stargazerCount
-							languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
-								edges {
-									size
-									node {
-									color
-									name
-									id
+				commitContributionsByRepository {
+							repository {
+								name
+								stargazerCount
+								languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
+									edges {
+										size
+										node {
+										color
+										name
+										id
+										}
 									}
 								}
 							}
 						}
-					}`
-					: ''
+				}
 			}
-			
-
-			}
-		}
-		}`
+			}`
 
 	//if panels includes toplanguages or toprepositories or userstatistics or commitgraph, get data from github api
-
 	let resp = null
-	if (
-		panels.includes('toplanguages') ||
-		panels.includes('toprepositories') ||
-		panels.includes('userstatistics') ||
-		panels.includes('commitgraph')
-	) {
-		resp = await graphql(query, {
-			headers: {
-				authorization: `token ${process.env.GITHUB_TOKEN}`,
-			},
+	const panelsToCheck = new Set([
+		'toplanguages',
+		'toprepositories',
+		'userstatistics',
+		'commitgraph',
+	])
+
+	if (panels.some((panel) => panelsToCheck.has(panel))) {
+		const headers = { authorization: `token ${process.env.GITHUB_TOKEN}` }
+		resp = await graphql(query, { headers }).catch((err) => {
+			res.status(404).json({ error: { message: 'FETCH ERROR ' + err.message } })
 		})
-			.then((res: any) => res)
-			.catch((err: any) => {
-				res.status(404).json({
-					error: {
-						message: err.message,
-					},
-				})
-			})
+	}
+
+	const rankings = {
+		S: 1500,
+		'A+': 1200,
+		A: 800,
+		'B+': 500,
+		B: 300,
+		C: 100,
+		D: 50,
+		E: 10,
+		F: 0,
 	}
 
 	const ranking = (thisyear: number) => {
 		const commits = thisyear || 0
-		if (commits > 1500) return 'S'
-		if (commits > 1200) return 'A+'
-		if (commits > 800) return 'A'
-		if (commits > 500) return 'B+'
-		if (commits > 300) return 'B'
-		if (commits > 100) return 'C'
-		if (commits > 50) return 'D'
+		for (const [rank, threshold] of Object.entries(rankings)) {
+			if (commits > threshold) return rank
+		}
+		return 'F'
 	}
-
-	//Set userData username
 
 	if (panels!.includes('userstatistics')) {
 		const resproot = resp.user.contributionsCollection
+		const contributionDays =
+			resproot.contributionCalendar.weeks[
+				resproot.contributionCalendar.weeks.length - 1
+			].contributionDays
+		const totalContributions = resproot.contributionCalendar.totalContributions
+		const thisMonthAndWeekContributions = contributionDays.reduce(
+			(a, b) => a + b.contributionCount,
+			0
+		)
+
 		userData = {
-			thisyear: resproot.contributionCalendar.totalContributions,
-			thismonth: resproot.contributionCalendar.weeks[
-				resproot.contributionCalendar.weeks.length - 1
-				// @ts-ignore
-			].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
-			thisweek: resproot.contributionCalendar.weeks[
-				resproot.contributionCalendar.weeks.length - 1
-				// @ts-ignore
-			].contributionDays.reduce((a, b) => a + b.contributionCount, 0),
+			thisyear: totalContributions,
+			thismonth: thisMonthAndWeekContributions,
+			thisweek: thisMonthAndWeekContributions,
 			pullrequests: resproot.totalPullRequestContributions,
 			issues: resp.user.contributionsCollection.totalIssueContributions,
-			ranking: ranking(resproot.contributionCalendar.totalContributions)!,
+			ranking: ranking(totalContributions)!,
 			progress: Math.min(
-				Math.max(
-					((resproot.contributionCalendar.totalContributions - 0) * (0 - 250)) /
-						(1500 - 0) +
-						250,
-					0
-				),
+				Math.max(((totalContributions - 0) * (0 - 250)) / (1500 - 0) + 250, 0),
 				250
 			),
 		}
 	}
 
-	if (panels!.includes('toplanguages')) {
+	if (panels?.includes('toplanguages')) {
 		const repositories =
 			resp.user.contributionsCollection.commitContributionsByRepository
-		const languages = repositories.map((repo: any) => {
-			const lang = repo.repository.languages.edges.map((lang: any) => {
-				return {
-					name: lang.node.name,
-				}
-			})
-			return lang
-		})
-
+		const languages = repositories.flatMap((repo: any) =>
+			repo.repository.languages.edges.map((lang: any) => lang.node.name)
+		)
 		const languageCount = languages.reduce((acc: any, val: any) => {
-			val.forEach((lang: any) => {
-				acc[lang.name] = (acc[lang.name] || 0) + 1
-			})
+			acc[val] = (acc[val] || 0) + 1
 			return acc
 		}, {})
-
 		userData.toplang = Object.entries(languageCount)
-			// @ts-ignore
 			.sort((a, b) => b[1] - a[1])
 			.slice(0, 4)
 	}
 
-	if (panels!.includes('toprepositories')) {
-		const repositories =
+	if (panels?.includes('toprepositories')) {
+		const topRepos =
 			resp.user.contributionsCollection.commitContributionsByRepository
-		const topRepos = repositories
-			.map((repo: any) => {
-				return {
+				.map((repo: any) => ({
 					name: repo.repository.name,
 					stars: repo.repository.stargazerCount,
-				}
-			})
-			// @ts-ignore
-			.sort((a, b) => b.stars - a.stars)
-			.slice(0, 4)
+				}))
+				.sort((a, b) => b.stars - a.stars)
+				.slice(0, 4)
+
 		userData.toprepos = topRepos
 	}
 
-	if (panels!.includes('commitgraph')) {
-		//Get count of contributions each month for the last 13 months
-		const resproot = resp.user.contributionsCollection
-		const weeks = resproot.contributionCalendar.weeks
-		const contributions = weeks.map((week: any) => {
-			const days = week.contributionDays
-			return days.reduce((a: any, b: any) => a + b.contributionCount, 0)
-		})
-		userData.commitgraph = contributions
+	const contributionCalendar =
+		resp.user.contributionsCollection?.contributionCalendar
+	if (contributionCalendar && contributionCalendar.weeks) {
+		const contributions = contributionCalendar.weeks
+			.slice(0, 52)
+			.map((week) => {
+				return week.contributionDays.reduce(
+					(a, b) => a + b.contributionCount,
+					0
+				)
+			})
+
+		userData.commitgraph = [...contributions]
 	}
 
 	//This is just free data for now
