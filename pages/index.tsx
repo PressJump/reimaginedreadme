@@ -139,7 +139,7 @@ export default function Home() {
 				<section className="bg-white dark:bg-neutral-900">
 					<div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-8 lg:px-12">
 						<a
-							href="#"
+							href="https://github.com/PressJump/reimaginedreadme"
 							className="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-neutral-700 bg-neutral-100 rounded-full dark:bg-neutral-800 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-700"
 							role="alert"
 						>
