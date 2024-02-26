@@ -3,7 +3,7 @@
  * @param contributions - An array of contributions data, each containing an array of contribution days with their counts and dates.
  * @returns The total number of contributions made in the current month.
  */
-function getContributionsForThisMonth(
+export default function getContributionsForThisMonth(
 	contributions: {
 		contributionDays: { contributionCount: number; date: string }[]
 	}[]
