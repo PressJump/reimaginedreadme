@@ -2,6 +2,10 @@
 
 <img width="120" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/558ab792aec59eb639671d41c5666ef12f6d0d80/assets/Writing%20hand/Light/3D/writing_hand_3d_light.png"/>
 
+## Deprecation Notice
+
+Reimagined Readme is currently undergoing deprecation. Further information can be found at issue [#32](https://github.com/PressJump/reimaginedreadme/issues/32) regarding it. Thank you for your support.
+
 ## Reimagined Readme
 
 GitHub readme widgets are too seperated and you need to add 4 different widgets with all different styles to show your GitHub statistics. **_Reimagined Readme_** tries to fix this problem by giving a layout to your readme that does not trigger OCD.
