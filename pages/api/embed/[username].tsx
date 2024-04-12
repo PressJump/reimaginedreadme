@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ReactDomServer from 'react-dom/server'
 import { container } from '../../../components'
+import getContributionsForThisMonth from '../../../utils/getContributionsForThisMonth'
 
 const { graphql } = require('@octokit/graphql')
 
@@ -152,9 +153,9 @@ export default async function handler(
 		'commitgraph',
 	])
 
-	if (panels.some((panel:any) => panelsToCheck.has(panel))) {
+	if (panels.some((panel: any) => panelsToCheck.has(panel))) {
 		const headers = { authorization: `token ${process.env.GITHUB_TOKEN}` }
-		resp = await graphql(query, { headers }).catch((err:any) => {
+		resp = await graphql(query, { headers }).catch((err: any) => {
 			res.status(404).json({ error: { message: 'FETCH ERROR ' + err.message } })
 		})
 	}
@@ -186,15 +187,18 @@ export default async function handler(
 				resproot.contributionCalendar.weeks.length - 1
 			].contributionDays
 		const totalContributions = resproot.contributionCalendar.totalContributions
-		const thisMonthAndWeekContributions = contributionDays.reduce(
+		const contributionsThisMonth = getContributionsForThisMonth(
+			resp.user.contributionsCollection.contributionCalendar.weeks
+		)
+		const thisWeekContributions = contributionDays.reduce(
 			(a, b) => a + b.contributionCount,
 			0
 		)
 
 		userData = {
 			thisyear: totalContributions,
-			thismonth: thisMonthAndWeekContributions,
-			thisweek: thisMonthAndWeekContributions,
+			thismonth: contributionsThisMonth,
+			thisweek: thisWeekContributions,
 			pullrequests: resproot.totalPullRequestContributions,
 			issues: resp.user.contributionsCollection.totalIssueContributions,
 			ranking: ranking(totalContributions)!,
