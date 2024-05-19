@@ -152,9 +152,9 @@ export default async function handler(
 		'commitgraph',
 	])
 
-	if (panels.some((panel:any) => panelsToCheck.has(panel))) {
+	if (panels.some((panel) => panelsToCheck.has(panel))) {
 		const headers = { authorization: `token ${process.env.GITHUB_TOKEN}` }
-		resp = await graphql(query, { headers }).catch((err:any) => {
+		resp = await graphql(query, { headers }).catch((err) => {
 			res.status(404).json({ error: { message: 'FETCH ERROR ' + err.message } })
 		})
 	}
