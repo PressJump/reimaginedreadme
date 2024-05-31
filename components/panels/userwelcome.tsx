@@ -19,7 +19,7 @@ export const Userwelcome = ({
 					x={200}
 					y="100"
 				>
-					👋 Welcome my name is {username}
+					👋 Welcome, my name is {username}
 				</text>
 			</g>
 		</>
