@@ -221,7 +221,11 @@ export const container = (
 
 	return (
 		<>
-			<svg xmlns="http://www.w3.org/2000/svg" width={width} height={height}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width={width}
+				height={height + 50}
+			>
 				<style>${style}</style>
 				<rect
 					xmlns="http://www.w3.org/2000/svg"
@@ -257,6 +261,20 @@ export const container = (
 						</g>
 					</svg>
 				)}
+
+				{/* Deprecation notice */}
+				<g transform={`translate(${10}, ${height - 10})`}>
+					<text
+						className="contribution-stats remarks"
+						x="0"
+						y="0"
+						style={{ fontWeight: 'bold', fill: 'red' }}
+					>
+						Deprecation Notice: The reimaginedreadme project has been deprecated
+						and will shutdown on September 30th 2024 making it no longer
+						usable/visible on your profile.
+					</text>
+				</g>
 			</svg>
 		</>
 	)
