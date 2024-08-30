@@ -240,28 +240,6 @@ export const container = (
 
 				{panelComponents}
 
-				{/* If the width is not 310 or more don't show this */}
-				{width >= 310 && (
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						xmlnsXlink="http://www.w3.org/1999/xlink"
-						x="0"
-						y="200"
-					>
-						<g className="item" transform="translate(25, 15)">
-							<text className="contribution-stats remarks" x="0" y="0">
-								Do you like how this widget looks?{' '}
-								<a
-									href="https://github.com/PressJump/reimaginedreadme"
-									className="link"
-								>
-									Get it for yourself.
-								</a>
-							</text>
-						</g>
-					</svg>
-				)}
-
 				{/* Deprecation notice */}
 				<g transform={`translate(${10}, ${height - 10})`}>
 					<text
