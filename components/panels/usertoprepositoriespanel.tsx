@@ -1,12 +1,13 @@
 import Head from 'next/head'
 import { type } from 'os'
 import { devsvg } from '../../utils/devsvg'
+import { Repository } from '../../utils/types'
 
 export const Usertoprepositoriespanel = ({
 	topRepositories,
 	componentpos,
 }: {
-	topRepositories: [string, unknown][]
+	topRepositories: Repository[]
 	componentpos: { x: number; y: number }
 }) => {
 	return (

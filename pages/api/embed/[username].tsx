@@ -1,39 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ReactDomServer from 'react-dom/server'
 import { container } from '../../../components'
+import {
+	UserData,
+	Repositories,
+	Repository,
+	customlist,
+	Data,
+	PanelProps,
+	ContributionDay,
+	ContributionCallendar,
+} from '../../../utils/types'
 
 const { graphql } = require('@octokit/graphql')
-
-type UserData = {
-	username?: string
-	thisyear?: number
-	thismonth?: number
-	thisweek?: number
-	pullrequests?: number
-	issues?: number
-	ranking?: string
-	progress?: number
-	toplang?: [string, unknown][]
-	toprepos?: [string, unknown][]
-	commitgraph?: number[]
-}
-
-type customlist = {
-	items: string[]
-}
-
-type Data = {
-	error?: {
-		message: string
-	}
-}
-
-type PanelProps = {
-	color?: string
-	titlecolor?: string
-	textcolor?: string
-	bgcolor?: string
-}
 
 export default async function handler(
 	req: NextApiRequest,
@@ -152,9 +131,9 @@ export default async function handler(
 		'commitgraph',
 	])
 
-	if (panels.some((panel:any) => panelsToCheck.has(panel))) {
+	if (panels.some((panel: any) => panelsToCheck.has(panel))) {
 		const headers = { authorization: `token ${process.env.GITHUB_TOKEN}` }
-		resp = await graphql(query, { headers }).catch((err:any) => {
+		resp = await graphql(query, { headers }).catch((err: any) => {
 			res.status(404).json({ error: { message: 'FETCH ERROR ' + err.message } })
 		})
 	}
@@ -181,12 +160,12 @@ export default async function handler(
 
 	if (panels!.includes('userstatistics')) {
 		const resproot = resp.user.contributionsCollection
-		const contributionDays =
+		const contributionDays: ContributionDay[] =
 			resproot.contributionCalendar.weeks[
 				resproot.contributionCalendar.weeks.length - 1
 			].contributionDays
 		const totalContributions = resproot.contributionCalendar.totalContributions
-		const thisMonthAndWeekContributions = contributionDays.reduce(
+		const thisMonthAndWeekContributions: number = contributionDays.reduce(
 			(a, b) => a + b.contributionCount,
 			0
 		)
@@ -208,32 +187,40 @@ export default async function handler(
 	if (panels?.includes('toplanguages')) {
 		const repositories =
 			resp.user.contributionsCollection.commitContributionsByRepository
-		const languages = repositories.flatMap((repo: any) =>
-			repo.repository.languages.edges.map((lang: any) => lang.node.name)
+		const languages: string[] = repositories.flatMap((repo: Repositories) =>
+			repo.repository.languages.edges.map((lang) => lang.node.name)
 		)
-		const languageCount = languages.reduce((acc: any, val: any) => {
-			acc[val] = (acc[val] || 0) + 1
-			return acc
-		}, {})
+		const languageCount = languages.reduce(
+			(acc: Record<string, number>, val: string) => {
+				acc[val] = (acc[val] || 0) + 1
+				return acc
+			},
+			{}
+		)
 		userData.toplang = Object.entries(languageCount)
 			.sort((a, b) => b[1] - a[1])
 			.slice(0, 4)
 	}
 
 	if (panels?.includes('toprepositories')) {
-		const topRepos =
+		const topRepos: Repository[] =
 			resp.user.contributionsCollection.commitContributionsByRepository
-				.map((repo: any) => ({
+				.map((repo: Repositories) => ({
 					name: repo.repository.name,
 					stars: repo.repository.stargazerCount,
+					languages: repo.repository.languages.edges.map(
+						(edge) => edge.node.name
+					),
 				}))
-				.sort((a, b) => b.stars - a.stars)
+				.sort(
+					(repo1: Repository, repo2: Repository) => repo2.stars - repo1.stars
+				)
 				.slice(0, 4)
 
 		userData.toprepos = topRepos
 	}
 
-	const contributionCalendar =
+	const contributionCalendar: ContributionCallendar =
 		resp.user.contributionsCollection?.contributionCalendar
 	if (contributionCalendar && contributionCalendar.weeks) {
 		const contributions = contributionCalendar.weeks

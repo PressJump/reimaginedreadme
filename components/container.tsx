@@ -6,36 +6,7 @@ import {
 	Usercommitgraph,
 	Userwelcome,
 } from '.'
-
-type UserData = {
-	username?: string
-	thisyear?: number
-	thismonth?: number
-	thisweek?: number
-	pullrequests?: number
-	issues?: number
-	ranking?: string
-	progress?: number
-	toplang?: [string, unknown][]
-	toprepos?: [string, unknown][]
-	commitgraph?: number[]
-}
-
-type PanelProps = {
-	color?: string
-	titlecolor?: string
-	textcolor?: string
-	bgcolor?: string
-}
-
-type componentpos = {
-	x: number
-	y: number
-}
-
-type customlist = {
-	items: string[]
-}
+import { UserData, PanelProps, customlist } from '../utils/types'
 
 export const container = (
 	userData: UserData,

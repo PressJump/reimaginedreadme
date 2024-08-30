@@ -1,18 +1,5 @@
 import Head from 'next/head'
-
-type UserData = {
-	username?: string
-	thisyear?: number
-	thismonth?: number
-	thisweek?: number
-	pullrequests?: number
-	issues?: number
-	ranking?: string
-	progress?: number
-	toplang?: [string, unknown][]
-	toprepos?: [string, unknown][]
-	commitgraph?: number[]
-}
+import { UserData } from '../../utils/types'
 
 export const Userstatspanel = ({
 	userData,
