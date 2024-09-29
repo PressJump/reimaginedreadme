@@ -4,7 +4,7 @@
 
 ## Deprecation Notice
 
-Reimagined Readme is currently undergoing deprecation. Further information can be found at issue [#32](https://github.com/PressJump/reimaginedreadme/issues/32) regarding it. Thank you for your support.
+Reimagined Readme is now deprecated and not available for use.  Further information can be found at issue [#32](https://github.com/PressJump/reimaginedreadme/issues/32) regarding it. Thank you for your support.
 
 ## Reimagined Readme
 
